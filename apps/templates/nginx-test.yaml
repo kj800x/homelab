@@ -1,18 +1,55 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nginx-loadbalancer
+  name: nginx-test
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/nginxinc/kubernetes-ingress
-    targetRevision: main
-    path: deployments/plain
-    helm:
-      values: |
-        service:
-          type: LoadBalancer
+    repoURL: ''
+    targetRevision: HEAD
+    path: ''
+    directory:
+      recurse: true
+    kustomize: {}
+    helm: {}
+    manifest:
+      apiVersion: v1
+      kind: List
+      items:
+        - apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: nginx
+            namespace: default
+          spec:
+            replicas: 2
+            selector:
+              matchLabels:
+                app: nginx
+            template:
+              metadata:
+                labels:
+                  app: nginx
+              spec:
+                containers:
+                  - name: nginx
+                    image: nginx:latest
+                    ports:
+                      - containerPort: 80
+        - apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx
+            namespace: default
+          spec:
+            selector:
+              app: nginx
+            ports:
+              - protocol: TCP
+                port: 80
+                targetPort: 80
+            type: LoadBalancer
   destination:
     server: https://kubernetes.default.svc
     namespace: default
