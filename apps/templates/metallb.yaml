@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: metallb-system
+    server: {{ .Values.spec.destination.server }}
+  project: default
+  source:
+    chart: metallb
+    repoURL: https://metallb.github.io/metallb/
+    targetRevision: 0.14.9
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: first-pool
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  addresses:
+  - 10.60.2.0/24
