@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+  namespace: node-exporter
+  labels:
+    app: node-exporter
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      hostNetwork: true  # Allows direct access to node's IP
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: node-exporter
+          image: quay.io/prometheus/node-exporter:latest
+          args:
+            - "--path.rootfs=/host"
+          ports:
+            - name: metrics
+              containerPort: 9100
+              hostPort: 9100  # Exposes on the node's public IP
+          securityContext:
+            privileged: true  # Required for full host metrics access
+          volumeMounts:
+            - name: rootfs
+              mountPath: /host
+              readOnly: true
+      volumes:
+        - name: rootfs
+          hostPath:
+            path: /
