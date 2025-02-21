@@ -32,8 +32,6 @@ spec:
               mountPath: /etc/prometheus/scrape
             - name: victoria-metrics-data
               mountPath: /victoria-metrics-data
-              options:
-                - readWrite
       volumes:
         - name: prometheus-config
           nfs:
