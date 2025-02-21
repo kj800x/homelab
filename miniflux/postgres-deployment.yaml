@@ -24,7 +24,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: miniflux-admin-secret
-              key: POSTGRES_PASSWORD
+              key: ADMIN_PASSWORD
         - name: PGDATA
           value: "/var/lib/postgresql/data"
         ports:
