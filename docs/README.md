@@ -1,6 +1,6 @@
 ## Important links
 
-Argo for now: http://10.60.1.15:31047/applications
+Argo: http://10.60.2.7/
 Grafana: http://10.60.2.5:3000/
 Kube dashboard: https://10.60.2.3:443/
 
