@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: victoria-metrics
+  namespace: victoria-metrics
+  labels:
+    app: victoria-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: victoria-metrics
+  template:
+    metadata:
+      labels:
+        app: victoria-metrics
+    spec:
+      containers:
+        - name: victoria-metrics
+          image: victoriametrics/victoria-metrics
+          command:
+            - "/victoria-metrics-prod"
+          args:
+            - "--promscrape.config=/etc/prometheus/prometheus.yml"
+            - "-maxLabelsPerTimeseries=35"
+            - "-selfScrapeInterval=10s"
+            - "-retentionPeriod=2y"
+          ports:
+            - containerPort: 8428
+          volumeMounts:
+            - name: prometheus-config
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
+            - name: victoria-metrics-data
+              mountPath: /victoria-metrics-data
+      volumes:
+        - name: prometheus-config
+          nfs:
+            server: 10.60.1.15
+            path: /data/docker/promscrape/prometheus.yml
+        - name: victoria-metrics-data
+          nfs:
+            server: 10.60.1.15
+            path: /data/docker/victoria-metrics
