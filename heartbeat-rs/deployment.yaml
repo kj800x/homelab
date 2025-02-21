@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heartbeat-rs
+  namespace: heartbeat-rs
+  labels:
+    app: heartbeat-rs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: heartbeat-rs
+  template:
+    metadata:
+      labels:
+        app: heartbeat-rs
+    spec:
+      containers:
+        - name: heartbeat-rs
+          image: ghcr.io/kj800x/heartbeat-rs:master
+          command: [ "heartbeat-rs" ]
+          env:
+            - name: HEARTBEAT_URL
+              value: "http://apps.coolkev.com:3005/api/push/SdiBYdO0Lr?status=up&msg=OK&ping="
+            - name: HEARTBEAT_SLEEP
+              value: "5"
+          workingDir: "/usr/src/heartbeat-rs"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "128Mi"
+          restartPolicy: Always
