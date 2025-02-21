@@ -65,3 +65,20 @@ Decode a value
 ```sh
 kubectl get secret miniflux-admin-secret -n miniflux -o jsonpath="{.data.ADMIN_PASSWORD}" | base64 --decode
 ```
+
+## Creating docker-registry secret
+
+To pull from private registries, you need to add a secret to each namespace that has containers from that private registry. Sorta annoying that we can't configure global secrets that are available in every namespace (maybe we could write a kube controller for that?). When creating a new namespace that needs to pull from ghcr-kj800x, make sure to add the following secret:
+
+```sh
+kubectl create secret docker-registry ghcr-kj800x --docker-server=https://ghcr.io --docker-username=kj800x --docker-password=STORED_IN_PASS_MANAGER --docker-email=kj800x@gmail.com --namespace=NAMESPACE
+```
+
+And then in the deployment.yaml in `.spec.template.spec` (next to `containers`) add the following:
+
+```yaml
+      imagePullSecrets:
+        - name: ghcr-kj800x
+```
+
+See `heartbeat-rs` for a reference.
