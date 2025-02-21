@@ -4,6 +4,7 @@ metadata:
   name: nginx
   namespace: default
 spec:
+  revisionHistoryLimit: 1
   replicas: 2
   selector:
     matchLabels:

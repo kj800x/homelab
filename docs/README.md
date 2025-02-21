@@ -9,7 +9,7 @@ Kube dashboard: https://10.60.2.3:443/
 ChatGPT is pretty good so far:
 
 ```
-Can I get a Kube loadbalancer service and deployment for this docker compose:
+Can I get a Kube loadbalancer service and deployment for this docker compose. Ensure that revisionHistoryLimit is set to 1:
 
 INSERT COMPOSE HERE
 
