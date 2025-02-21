@@ -37,8 +37,8 @@ spec:
         - name: prometheus-config
           nfs:
             server: 10.60.1.15
-            path: /data/docker/promscrape/prometheus.yml
+            path: /data/mounts/promscrape/prometheus.yml
         - name: victoria-metrics-data
           nfs:
             server: 10.60.1.15
-            path: /data/docker/victoria-metrics
+            path: /data/services/victoria-metrics
