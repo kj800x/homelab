@@ -14,3 +14,7 @@ spec:
     path: cluster-infra
     repoURL: https://github.com/kj800x/homelab
     targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
