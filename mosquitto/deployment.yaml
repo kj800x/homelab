@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: mosquitto
+  labels:
+    app: mosquitto
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mosquitto
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      containers:
+        - name: mosquitto
+          image: eclipse-mosquitto:latest
+          command: ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
+          volumeMounts:
+            - name: mosquitto-storage
+              mountPath: /mosquitto
+          ports:
+            - containerPort: 1883
+              protocol: TCP
+            - containerPort: 9001
+              protocol: TCP
+      volumes:
+        - name: mosquitto-storage
+          nfs:
+            server: 10.60.1.15
+            path: /data/services/mosquitto
