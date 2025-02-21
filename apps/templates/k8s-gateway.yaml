@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: k8s-gateway
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://ori-edge.github.io/k8s_gateway/
+    chart: k8s-gateway
+    targetRevision: 2.4.0
+    helm:
+      values: |
+        domain: kube
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
