@@ -1,1 +1,0 @@
-# homelab argocd config
