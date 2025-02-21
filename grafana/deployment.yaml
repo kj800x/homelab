@@ -24,7 +24,7 @@ spec:
             - name: GF_DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: grafana-db-secret
+                  name: grafana-postgres-secret
                   key: GF_DATABASE_PASSWORD
             - name: GF_DATABASE_SSL_MODE
               value: "disable"
