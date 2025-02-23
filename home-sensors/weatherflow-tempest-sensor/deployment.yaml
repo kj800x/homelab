@@ -28,6 +28,7 @@ spec:
               value: "production"
           ports:
             - containerPort: 50222
+              hostPort: 50222 # Needs to use hostPort to get UDP broadcast packets
               protocol: UDP
             - containerPort: 8080
               protocol: TCP
