@@ -28,7 +28,7 @@ spec:
             - name: TZ
               value: "Etc/UTC"
             - name: JELLYFIN_PublishedServerUrl
-              value: "10.60.1.15" # Needs to be updated once the service is created
+              value: "10.60.2.9"
           ports:
             - containerPort: 1900
               protocol: UDP
