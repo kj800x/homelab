@@ -20,18 +20,24 @@ spec:
         - name: ghcr-kj800x
       containers:
         - name: mqtt-prometheus-exporter
-          image: ghcr.io/kj800x/mqtt-prometheus:master
+          image: ghcr.io/kj800x/mqtt-prometheus:commit-8116cc9b0bcf4b692728fe495eafacbc83aab1fb
           command: ["/bin/sh", "-c", "node lib/index.js"]
           env:
             - name: NODE_ENV
               value: "production"
+            - name: MQTT_HOST
+              value: "mosquitto.mosquitto.svc.cluster.local"
+            - name: MQTT_PORT
+              value: 1883
+            - name: METRICS_PORT
+              value: 9100
           ports:
-            - containerPort: 8080
+            - containerPort: 9100
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 9100
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 2
