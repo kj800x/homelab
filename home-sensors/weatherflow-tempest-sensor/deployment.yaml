@@ -16,7 +16,6 @@ spec:
       labels:
         app: weatherflow-tempest-sensor
     spec:
-      # TODO: since this needs to bind to the host network, it should be set to some random high port instead of the prime real estate of 8080
       hostNetwork: true
       imagePullSecrets:
         - name: ghcr-kj800x
@@ -28,4 +27,6 @@ spec:
           env:
             - name: NODE_ENV
               value: "production"
+            - name: METRICS_PORT
+              value: "31036"
           workingDir: "/app"

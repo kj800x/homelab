@@ -20,12 +20,14 @@ spec:
         - name: ghcr-kj800x
       containers:
         - name: nest-sensor
-          image: kj800x/nest-sensor
+          image: ghcr.io/kj800x/nest-influxdb-integration:master
           command: ["/bin/sh", "-c", "node lib/index.js"]
           entrypoint: ["docker-entrypoint.sh"]
           env:
             - name: NODE_ENV
               value: "production"
+            - name: METRICS_PORT
+              value: "9100"
             - name: GOOGLE_REFRESH_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -42,15 +44,14 @@ spec:
                   name: google-nest-sensor-auth
                   key: GOOGLE_CLIENT_SECRET
           ports:
-            - containerPort: 8080
+            - containerPort: 9100
               protocol: TCP
           volumeMounts:
-            - name: access-token
-              mountPath: /app
-              subPath: access-token.txt
+            - name: access-token-dir
+              mountPath: /app/data
           workingDir: "/app"
       volumes:
-        - name: access-token
+        - name: access-token-dir
           nfs:
             server: 10.60.1.15
             path: /data/services/nest-scrape
