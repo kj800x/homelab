@@ -6,6 +6,9 @@ metadata:
   labels:
     app: weatherflow-tempest-sensor
 spec:
+  strategy:
+    # Required because the new pods won't start up properly if the old ones are still running
+    type: Recreate
   replicas: 1
   revisionHistoryLimit: 1
   selector:
