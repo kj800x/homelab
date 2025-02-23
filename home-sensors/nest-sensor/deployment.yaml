@@ -20,7 +20,7 @@ spec:
         - name: ghcr-kj800x
       containers:
         - name: nest-sensor
-          image: ghcr.io/kj800x/nest-influxdb-integration:master
+          image: ghcr.io/kj800x/nest-influxdb-integration:sha256-54686af5b04a0bf679ff71e4823bad4d21120f7dd7962bec37caf5f37ae7759d.sig
           command: ["/bin/sh", "-c", "node lib/index.js"]
           entrypoint: ["docker-entrypoint.sh"]
           env:

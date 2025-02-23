@@ -21,7 +21,7 @@ spec:
         - name: ghcr-kj800x
       containers:
         - name: weatherflow-tempest-sensor
-          image: ghcr.io/kj800x/weatherflow-tempest-influxdb-integration:master
+          image: ghcr.io/kj800x/weatherflow-tempest-influxdb-integration:sha256-c1c0fc2b42e45f047b28d07359cdeb2f417fbe21ef83cb9e1801feef2a4923c7.sig
           command: ["/bin/sh", "-c", "node lib/index.js"]
           entrypoint: ["docker-entrypoint.sh"]
           env:
