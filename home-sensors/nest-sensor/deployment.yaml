@@ -46,11 +46,11 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: access-token
-              mountPath: /app/access-token.txt
+              mountPath: /app
               subPath: access-token.txt
           workingDir: "/app"
       volumes:
         - name: access-token
           nfs:
             server: 10.60.1.15
-            path: /data/services/nest-scrape/access-token.txt
+            path: /data/services/nest-scrape
