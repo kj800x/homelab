@@ -23,7 +23,6 @@ spec:
         - name: weatherflow-tempest-sensor
           image: ghcr.io/kj800x/weatherflow-tempest-influxdb-integration@sha256:55ea8db5434faf9deabfb349901f32f1af9c9bbd1b7403cd597fb4fee37e69f5
           command: ["/bin/sh", "-c", "node lib/index.js"]
-          entrypoint: ["docker-entrypoint.sh"]
           env:
             - name: NODE_ENV
               value: "production"

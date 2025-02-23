@@ -22,7 +22,6 @@ spec:
         - name: mqtt-prometheus-exporter
           image: ghcr.io/kj800x/mqtt-prometheus:master
           command: ["/bin/sh", "-c", "node lib/index.js"]
-          entrypoint: ["docker-entrypoint.sh"]
           env:
             - name: NODE_ENV
               value: "production"
