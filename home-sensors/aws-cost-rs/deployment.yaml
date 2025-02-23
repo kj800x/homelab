@@ -38,3 +38,11 @@ spec:
           ports:
             - containerPort: 9090
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9090
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3

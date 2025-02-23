@@ -29,4 +29,12 @@ spec:
               value: "production"
             - name: METRICS_PORT
               value: "31036"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 31036
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
           workingDir: "/app"

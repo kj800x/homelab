@@ -29,4 +29,12 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
           workingDir: "/app"
