@@ -16,6 +16,7 @@ spec:
       labels:
         app: weatherflow-tempest-sensor
     spec:
+      hostNetwork: true
       imagePullSecrets:
         - name: ghcr-kj800x
       containers:
