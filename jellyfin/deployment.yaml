@@ -19,7 +19,6 @@ spec:
       containers:
         - name: jellyfin
           image: lscr.io/linuxserver/jellyfin:latest
-          args: ["/init"]
           env:
             - name: PGID
               value: "1000"
