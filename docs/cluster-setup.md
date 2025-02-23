@@ -9,7 +9,7 @@ ArgoCD has been deployed from scratch
 ```sh
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}' # depends on MetalLB working
 ```
 
 Everything else has been configured inside of this repo using Argo and the App of Apps pattern. One app was manually created that points at /apps and everything else should take care of itself automatically.

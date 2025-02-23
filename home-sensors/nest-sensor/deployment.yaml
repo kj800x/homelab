@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest-sensor
+  namespace: home-sensors
+  labels:
+    app: nest-sensor
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: nest-sensor
+  template:
+    metadata:
+      labels:
+        app: nest-sensor
+    spec:
+      imagePullSecrets:
+        - name: ghcr-kj800x
+      containers:
+        - name: nest-sensor
+          image: kj800x/nest-sensor
+          command: ["/bin/sh", "-c", "node lib/index.js"]
+          entrypoint: ["docker-entrypoint.sh"]
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: GOOGLE_REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: google-nest-sensor-auth
+                  key: GOOGLE_REFRESH_TOKEN
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: google-nest-sensor-auth
+                  key: GOOGLE_CLIENT_ID
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google-nest-sensor-auth
+                  key: GOOGLE_CLIENT_SECRET
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: access-token
+              mountPath: /app/access-token.txt
+              subPath: access-token.txt
+          workingDir: "/app"
+      volumes:
+        - name: access-token
+          nfs:
+            server: 10.60.1.15
+            path: /data/services/nest-scrape/access-token.txt
