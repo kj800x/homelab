@@ -28,9 +28,9 @@ spec:
             - name: MQTT_HOST
               value: "mosquitto.mosquitto.svc.cluster.local"
             - name: MQTT_PORT
-              value: 1883
+              value: "1883"
             - name: METRICS_PORT
-              value: 9100
+              value: "9100"
           ports:
             - containerPort: 9100
               protocol: TCP
