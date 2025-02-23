@@ -3,13 +3,14 @@
 Argo: http://10.60.2.7/
 Grafana: http://10.60.2.5:3000/
 Kube dashboard: https://10.60.2.3:443/
+MQTT: 10.60.2.6
 
 ## Converting from docker
 
 ChatGPT is pretty good so far:
 
 ```
-Can I get a Kube loadbalancer service and deployment for this docker compose. Ensure that revisionHistoryLimit is set to 1:
+Can I get a Kube loadbalancer service and deployment for this docker compose. Ensure that revisionHistoryLimit is set to 1. Define volumes inline in the deployment definition:
 
 INSERT COMPOSE HERE
 
