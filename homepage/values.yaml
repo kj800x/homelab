@@ -134,8 +134,8 @@ config:
             icon: miniflux.png
             href: http://miniflux.home.coolkev.com/
             description: RSS feed reader
-            server: local
-            container: miniflux-miniflux-1
+            # server: local
+            # container: miniflux-miniflux-1
 
     # - Document Archival:
     #     - Paperless NGX:
