@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+spec:
+  sources:
+  - repoURL: https://jameswynn.github.io/helm-charts
+    chart: jameswynn/homepage
+    targetRevision: 2.0.1
+    helm:
+      valueFiles:
+      - $values/homepage/values.yaml
+  - repoURL: https://github.com/kj800x/homelab
+    targetRevision: master
+    ref: values
