@@ -12,7 +12,7 @@ spec:
   project: default
   sources:
   - repoURL: https://jameswynn.github.io/helm-charts
-    chart: jameswynn/homepage
+    chart: homepage
     targetRevision: 2.0.1
     helm:
       valueFiles:
