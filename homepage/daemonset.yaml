@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: homepage-proxy
+  namespace: homepage
+spec:
+  selector:
+    matchLabels:
+      app: homepage-proxy
+  template:
+    metadata:
+      labels:
+        app: homepage-proxy
+    spec:
+      hostNetwork: true  # Ensures port 80 is accessible on each node
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+              hostPort: 80  # Binds to port 80 on the node
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      volumes:
+        - name: config
+          configMap:
+            name: homepage-nginx-config
