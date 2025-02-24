@@ -5,20 +5,151 @@ config:
             - abbr: GH
               href: https://github.com/
   services:
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
+    - Media:
+        - Jellyfin:
+            icon: jellyfin.png
+            href: http://jellyfin.home.coolkev.com/web/index.html
+            description: Media server
+        #    server: local
+        #    container: jellyfin
+        # - Sonarr:
+        #     icon: sonarr.png
+        #     href: http://10.60.1.15:8989/
+        #     description: TV management
+        #     server: local
+        #     container: sonarr
+        # - Radarr:
+        #     icon: radarr.png
+        #     href: http://10.60.1.15:7878/
+        #     description: Movie management
+        #     server: local
+        #     container: radarr
+        # - Prowlarr:
+        #     icon: prowlarr.png
+        #     href: http://10.60.1.15:9696/
+        #     description: Tracker management
+        #     server: local
+        #     container: prowlarr
+        # - ErsatzTV:
+        #     icon: ersatztv.png
+        #     href: http://10.60.1.15:8409/
+        #     description: Live TV generator
+        #     server: local
+        #     container: ersatztv
+        # - qBittorrent:
+        #     icon: qbittorrent.png
+        #     href: http://10.60.1.15:8090/
+        #     description: Torrent client
+        #     server: local
+        #     container: bittorrent-torrent-1
+        # - Firefox VPN:
+        #     icon: firefox.png
+        #     href: http://10.60.1.15:3001/
+        #     description: VPN browser
+        #     server: local
+        #     container: firefox
 
-    - My Second Group:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
+    - Monitoring:
+        - Grafana:
+            icon: grafana.png
+            href: http://grafana.home.coolkev.com/
+            description: Monitoring visualizer
+            # server: local
+            # container: grafana
+        - Victoria Metrics:
+            icon: mdi-database
+            href: http://metrics.home.coolkev.com:8428/
+            description: Time series database
+            # server: local
+            # container: victoria-metrics
+        # - Uptime Kuma:
+        #     icon: uptime-kuma.png
+        #     href: http://10.60.1.15:3005/
+        #     description: Uptime monitor
+        #     server: local
+        #     container: uptime-kuma
+        - Life Logger:
+            icon: mdi-database
+            href: http://apps.coolkev.com/
+            description: Manually tracked events database
+            siteMonitor: http://apps.coolkev.com/
 
-    - My Third Group:
-        - My Third Service:
-            href: http://localhost/
-            description: Homepage is 😎
+    # - Wyze:
+    #     - Wyze Bridge:
+    #         icon: mdi-cctv
+    #         href: http://10.60.1.15:5000/
+    #         description: Camera dashboard
+    #         server: local
+    #         container: wyze-bridge
+    #     - Driveway:
+    #         icon: mdi-cctv
+    #         href: http://10.60.1.15:8889/driveway/
+    #     - Front door:
+    #         icon: mdi-cctv
+    #         href: http://10.60.1.15:8889/front-door/
+    #     - Front yard:
+    #         icon: mdi-cctv
+    #         href: http://10.60.1.15:8889/front-yard/
+    #     - Grow Tent:
+    #         icon: mdi-cctv
+    #         href: http://10.60.1.15:8889/grow-tent/
+    #     - Grow Tent Timelapse 24h:
+    #         icon: mdi-cctv
+    #         href: http://10.60.1.15:59633/timelapse/24/grow-tent
+    #     - Grow Tent Timelapse 48h:
+    #         icon: mdi-cctv
+    #         href: http://10.60.1.15:59633/timelapse/48/grow-tent
+    #     - Grow Tent Timelapse 1w:
+    #         icon: mdi-cctv
+    #         href: http://10.60.1.15:59633/timelapse/1w/grow-tent
+    #     - Driveway Timelapse 24h:
+    #         icon: mdi-cctv
+    #         href: http://10.60.1.15:59633/timelapse/24/driveway
+
+    - Administration:
+      - ArgoCD:
+          icon: argo-cd.png
+          href: http://argo.home.coolkev.com/
+          description: GitOps manager
+      - Kube Dashboard:
+          icon: kubernetes-dashboard.png
+          href: https://k8s.home.coolkev.com/
+          description: Kubernetes management dashboard
+          # server: local
+          # container: argocd-server
+        # - Portainer:
+        #     icon: portainer.png
+        #     href: http://10.60.1.15:9000/
+        #     description: Docker manager
+        #     server: local
+        #     container: portainer
+        # - OpenMediaVault:
+        #     icon: openmediavault.png
+        #     href: http://10.60.1.15:9080/
+        #     description: NAS manager
+        #     siteMonitor: http://10.60.1.15:9080/
+
+    - Feeds:
+        - Miniflux:
+            icon: miniflux.png
+            href: http://miniflux.home.coolkev.com/
+            description: RSS feed reader
+            server: local
+            container: miniflux-miniflux-1
+
+    # - Document Archival:
+    #     - Paperless NGX:
+    #         icon: paperless-ngx.png
+    #         href: http://10.60.1.15:8010/
+    #         description: Document server
+    #         server: local
+    #         container: paperless-ngx-webserver-1
+    #     - Scan server:
+    #         icon: mdi-scanner
+    #         href: http://10.60.1.15:8011/
+    #         description: Scan server
+    #         server: local
+    #         container: scan-server
   widgets:
     # show the kubernetes widget, with the cluster summary and individual nodes
     - kubernetes:
@@ -33,9 +164,9 @@ config:
           cpu: true
           memory: true
           showLabel: true
-    - search:
-        provider: duckduckgo
-        target: _blank
+    # - search:
+    #     provider: duckduckgo
+    #     target: _blank
   kubernetes:
     mode: cluster
   settings:
@@ -48,18 +179,18 @@ serviceAccount:
 # This enables the service account to access the necessary resources
 enableRbac: true
 
-ingress:
-  main:
-    enabled: true
-    annotations:
-      # Example annotations to add Homepage to your Homepage!
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/name: "Homepage"
-      gethomepage.dev/description: "Dynamically Detected Homepage"
-      gethomepage.dev/group: "Dynamic"
-      gethomepage.dev/icon: "homepage.png"
-    hosts:
-      - host: homepage.example.com
-        paths:
-          - path: /
-            pathType: Prefix
+# ingress:
+#   main:
+#     enabled: true
+#     annotations:
+#       # Example annotations to add Homepage to your Homepage!
+#       gethomepage.dev/enabled: "true"
+#       gethomepage.dev/name: "Homepage"
+#       gethomepage.dev/description: "Dynamically Detected Homepage"
+#       gethomepage.dev/group: "Dynamic"
+#       gethomepage.dev/icon: "homepage.png"
+#     hosts:
+#       - host: homepage.example.com
+#         paths:
+#           - path: /
+#             pathType: Prefix
