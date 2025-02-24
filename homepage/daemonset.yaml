@@ -12,7 +12,12 @@ spec:
       labels:
         app: homepage-proxy
     spec:
-      hostNetwork: true  # Ensures port 80 is accessible on each node
+      hostNetwork: true  # Ensures the container binds to port 80 on the node
+      dnsPolicy: ClusterFirstWithHostNet  # Required when using hostNetwork
+      initContainers:
+        - name: wait-for-dns
+          image: busybox:latest
+          command: ['sh', '-c', 'until nslookup homepage.homepage.svc.cluster.local; do sleep 2; done']
       containers:
         - name: nginx
           image: nginx:latest
