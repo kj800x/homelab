@@ -8,6 +8,10 @@ spec:
   selector:
     app: jellyfin
   ports:
+    - name: http-default
+      protocol: TCP
+      port: 80
+      targetPort: 8096
     - name: http
       protocol: TCP
       port: 8096
