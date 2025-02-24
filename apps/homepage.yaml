@@ -18,7 +18,8 @@ spec:
       valueFiles:
       - $values/homepage/values.yaml
   - repoURL: https://github.com/kj800x/homelab
-    targetRevision: master
+    path: homepage
+    targetRevision: HEAD
     ref: values
   syncPolicy:
     automated:
