@@ -20,13 +20,19 @@ spec:
           ports:
             - containerPort: 22
           readinessProbe:
-            tcpSocket:
-              port: 22
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "pgrep sshd"
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
-            tcpSocket:
-              port: 22
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "pgrep sshd"
             initialDelaySeconds: 15
             periodSeconds: 20
           env:
