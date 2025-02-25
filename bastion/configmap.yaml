@@ -1,3 +1,6 @@
+# FIXME: I thought this configmap being updated should automatically update the bastion pod, but it doesn't.
+# It seems like the bastion pod just gets upset whenever the configmap is updated. (cannot read file).
+# I have to manually restart the bastion pod to get it to read the new configmap.
 apiVersion: v1
 kind: ConfigMap
 metadata:
