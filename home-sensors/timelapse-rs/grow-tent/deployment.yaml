@@ -20,7 +20,7 @@ spec:
         - name: ghcr-kj800x
       containers:
         - name: timelapse-rs-grow-tent
-          image: ghcr.io/kj800x/timelapse-rs:commit-73b539e5dbbbf27d58e729a7e454bd40c4cb4556
+          image: ghcr.io/kj800x/timelapse-rs:commit-496ae16938c580875b5c0047814701731edc7198
           command: ["timelapse-rs"]
           workingDir: "/usr/src/timelapse-rs"
           env:
@@ -30,6 +30,8 @@ spec:
               value: "RTSP"
             - name: SLEEP_SECS
               value: "900"
+            - name: FEED_NAME
+              value: "grow-tent"
             - name: FEED_URL
               valueFrom:
                 secretKeyRef:
