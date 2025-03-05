@@ -20,7 +20,7 @@ spec:
         - name: ghcr-kj800x
       containers:
         - name: timelapse-rs-grow-tent
-          image: kj800x/timelapse-rs:commit-73b539e5dbbbf27d58e729a7e454bd40c4cb4556
+          image: ghcr.io/kj800x/timelapse-rs:commit-73b539e5dbbbf27d58e729a7e454bd40c4cb4556
           command: ["./timelapse-rs"]
           workingDir: "/usr/src/timelapse-rs"
           env:
