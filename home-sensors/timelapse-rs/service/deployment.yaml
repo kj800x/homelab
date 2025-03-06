@@ -20,7 +20,7 @@ spec:
         - name: ghcr-kj800x
       containers:
         - name: timelapse-service-rs
-          image: ghcr.io/kj800x/timelapse-service-rs:commit-c03c10ba6eb9c6e7adb7f81a07f0de99af11eb84
+          image: ghcr.io/kj800x/timelapse-service-rs:commit-1b92224448ad71757a0f7bd52c4fc9faff0a6620
           command: ["timelapse-service-rs"]
           workingDir: "/usr/src/timelapse-service-rs"
           env:
