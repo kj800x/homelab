@@ -20,7 +20,7 @@ spec:
         - name: ghcr-kj800x
       containers:
         - name: life-logger
-          image: ghcr.io/kj800x/life-logger-2:commit-ed6bc1f80c5308fcb841c9f0e04b8f2e76befd09
+          image: ghcr.io/kj800x/life-logger-2:commit-131fb8ac04ab15a4a9a1e3f68e0c876ab59611cb
           command: ["life-logger-2-rs"]
           env:
             - name: SERVER_HOST
