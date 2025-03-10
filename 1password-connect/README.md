@@ -58,3 +58,25 @@ And it works now.
 > Context: I'm using ArgoCD to bootstrap my cluster, so I'm manually creating the secrets before deploying the Connect server. I can't use the `--from-file` argument since Argo is doing the Helm deployment, not me. The clue was in the helm chart - specifically that the credentials content was being set as `stringData`, not `data`, and was being base64 encoded. From the docs, values from the `stringData` fields get base64 encoded into the data fields when the secret is created! Jackpot!
 >
 > I'm struggling to figure out how to clarify this in the docs. I think what's causing the confusion is that the default secret key is `1password-credentials.json`, but it's decoded contents are expected to be encoded JSON, not raw JSON. Would that be considered a bug or is that as designed?
+
+
+# Operator
+
+Once you've got the connect server working, it's easy to get the operator running too.
+
+Update values.yaml:
+
+```yaml
+operator:
+  create: true
+```
+
+Create the token for the operator to use:
+
+```sh
+kubectl create secret generic onepassword-token --namespace=1password-connect --from-literal=token=YOUR_CONNECT_SERVER_TOKEN_HERE
+```
+
+Sync and you're golden.
+
+
