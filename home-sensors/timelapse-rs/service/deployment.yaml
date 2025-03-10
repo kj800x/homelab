@@ -33,12 +33,19 @@ spec:
           volumeMounts:
             - name: data-volume
               mountPath: /data
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 8080
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
       volumes:
         - name: data-volume
           nfs:
