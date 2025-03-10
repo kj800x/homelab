@@ -1,2 +1,4 @@
 connect:
   serviceType: LoadBalancer
+operator:
+  create: true
