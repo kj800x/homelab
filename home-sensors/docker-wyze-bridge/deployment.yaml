@@ -39,6 +39,12 @@ spec:
           env:
             - name: WB_AUTH
               value: "false"
+            - name: FILTER_BLOCK
+              value: "true"
+            - name: FILTER_NAMES
+              value: "Oil,BACK YARD,Screen House,Grow Tent"
+            - name: ROTATE_DOOR
+              value: "true"
             - name: WYZE_EMAIL
               valueFrom:
                 secretKeyRef:
