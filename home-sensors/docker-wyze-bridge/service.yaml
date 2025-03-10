@@ -8,31 +8,31 @@ spec:
   selector:
     app: docker-wyze-bridge
   ports:
-    - name: WEB-UI
+    - name: web-ui
       protocol: TCP
       port: 5000
       targetPort: 5000
-    - name: WEB-UI-ALT
+    - name: web-ui-alt
       protocol: TCP
       port: 5050
       targetPort: 5050
-    - name: RTMP
+    - name: rtmp
       protocol: TCP
       port: 1935
       targetPort: 1935
-    - name: RTSP
+    - name: rtsp
       protocol: TCP
       port: 8554
       targetPort: 8554
-    - name: HLS
+    - name: hls
       protocol: TCP
       port: 8888
       targetPort: 8888
-    - name: WebRTC
+    - name: webrtc
       protocol: TCP
       port: 8889
       targetPort: 8889
-    - name: WebRTC/ICE
+    - name: webrtc-ice
       protocol: UDP
       port: 8189
       targetPort: 8189
