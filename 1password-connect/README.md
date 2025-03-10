@@ -91,7 +91,7 @@ spec:
   itemPath: "vaults/kube/items/test_password"
 ```
 
-# Reading secret vlaues
+# Reading secret values
 
 ```
 kubectl get secret --namespace argocd test-secret -jsonpath={".data.password"} | base64 --decode
