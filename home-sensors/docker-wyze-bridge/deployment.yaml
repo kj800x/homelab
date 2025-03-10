@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-wyze-bridge
+  namespace: home-sensors
+  labels:
+    app: docker-wyze-bridge
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: docker-wyze-bridge
+  template:
+    metadata:
+      labels:
+        app: docker-wyze-bridge
+    spec:
+      containers:
+        - name: docker-wyze-bridge
+          image: mrlt8/wyze-bridge:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 1935
+              protocol: TCP
+            - containerPort: 8554
+              protocol: TCP
+            - containerPort: 8888
+              protocol: TCP
+            - containerPort: 8889
+              protocol: TCP
+            - containerPort: 8189
+              protocol: UDP
+            - containerPort: 5050
+              protocol: TCP
+            - containerPort: 5000
+              protocol: TCP
+          env:
+            - name: WB_AUTH
+              value: "false"
+            - name: WYZE_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: wyze-creds
+                  key: username
+            - name: WYZE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wyze-creds
+                  key: password
+            - name: API_ID
+              valueFrom:
+                secretKeyRef:
+                  name: wyze-creds
+                  key: api-id
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: wyze-creds
+                  key: api-key
