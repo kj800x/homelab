@@ -80,3 +80,19 @@ kubectl create secret generic onepassword-token --namespace=1password-connect --
 Sync and you're golden.
 
 
+# Testing secret creation
+
+```
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: test-secret
+spec:
+  itemPath: "vaults/kube/items/test_password"
+```
+
+# Reading secret vlaues
+
+```
+kubectl get secret --namespace argocd test-secret -jsonpath={".data.password"} | base64 --decode
+```
