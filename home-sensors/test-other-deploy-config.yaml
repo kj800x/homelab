@@ -1,0 +1,31 @@
+apiVersion: cicd.coolkev.com/v1
+kind: DeployConfig
+metadata:
+  name: other-test-repo
+  namespace: home-sensors
+spec:
+  autodeploy: true
+  repo:
+    owner: kj800x
+    repo: test-repo
+    branch: master
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 1
+    selector:
+      matchLabels:
+        app: other-test-repo
+    template:
+      metadata:
+        labels:
+          app: other-test-repo
+      spec:
+        imagePullSecrets:
+          - name: ghcr-kj800x
+        containers:
+          - name: other-test-repo
+            image: ghcr.io/kj800x/test-repo
+            command: ["./rust-hello-world"]
+            ports:
+              - containerPort: 8080
+                protocol: TCP
