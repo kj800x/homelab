@@ -25,7 +25,7 @@ spec:
         containers:
           - name: test-repo
             image: ghcr.io/kj800x/test-repo
-            command: ["test-repo"]
+            command: ["./rust-hello-world"]
             ports:
               - containerPort: 8080
                 protocol: TCP
