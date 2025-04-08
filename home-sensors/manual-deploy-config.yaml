@@ -21,7 +21,6 @@ spec:
         labels:
           app: manual-deploy-config
       spec:
-        restartPolicy: OnFailure
         imagePullSecrets:
           - name: ghcr-kj800x
         containers:
