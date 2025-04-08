@@ -4,6 +4,7 @@ metadata:
   name: manual-deploy-config
   namespace: home-sensors
 spec:
+  resourceType: Deployment
   autodeploy: false
   repo:
     owner: kj800x

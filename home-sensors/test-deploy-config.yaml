@@ -4,6 +4,7 @@ metadata:
   name: test-repo
   namespace: home-sensors
 spec:
+  resourceType: Deployment
   autodeploy: true
   repo:
     owner: kj800x
