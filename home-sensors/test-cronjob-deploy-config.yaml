@@ -1,0 +1,25 @@
+apiVersion: cicd.coolkev.com/v1
+kind: DeployConfig
+metadata:
+  name: test-job
+  namespace: home-sensors
+spec:
+  resourceType: CronJob
+  autodeploy: true
+  repo:
+    owner: kj800x
+    repo: test-repo
+    defaultBranch: job-test
+  spec:
+    # Run every minute
+    schedule: "* * * * *"
+    jobTemplate:
+      spec:
+        template:
+          spec:
+            imagePullSecrets:
+              - name: ghcr-kj800x
+            containers:
+              - name: test-job
+                image: ghcr.io/kj800x/test-repo
+                command: ["./rust-hello-world"]
