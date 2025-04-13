@@ -16,6 +16,7 @@ spec:
       labels:
         app: cicd
     spec:
+      serviceAccountName: cicd-operator
       imagePullSecrets:
         - name: ghcr-kj800x
       containers:
