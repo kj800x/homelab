@@ -21,7 +21,7 @@ spec:
         - name: ghcr-kj800x
       containers:
         - name: cicd
-          image: ghcr.io/kj800x/cicd:commit-946d74df07b35d8eb7c561d638ada877c3748421
+          image: ghcr.io/kj800x/cicd:commit-6aed7bf15e2d062ef208e689d2c47d316706e2dc
           command: [ "cicd" ]
           env:
             - name: WEBSOCKET_URL
