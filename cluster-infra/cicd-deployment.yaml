@@ -25,6 +25,10 @@ spec:
           env:
             - name: WEBSOCKET_URL
               value: "ws://apps.coolkev.com:8080/ws"
+            - name: ENABLE_K8S_CONTROLLER
+              value: "true"
+            - name: DATABASE_PATH
+              value: "/data/db.db"
             - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
@@ -40,10 +44,15 @@ spec:
                 secretKeyRef:
                   name: cicd-auth
                   key: DISCORD_CHANNEL_ID
-            - name: ENABLE_K8S_CONTROLLER
-              value: "true"
           workingDir: "/usr/src/cicd"
           ports:
             - containerPort: 8080
               protocol: TCP
-
+          volumeMounts:
+            - name: cicd-data
+              mountPath: /data
+      volumes:
+        - name: cicd-data
+          nfs:
+            server: 10.60.1.15
+            path: /data/services/cicd
