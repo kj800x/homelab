@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cicd
-  namespace: cluster-infra
+  namespace: argocd
 spec:
   type: LoadBalancer
   selector:
