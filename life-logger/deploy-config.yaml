@@ -1,0 +1,49 @@
+apiVersion: cicd.coolkev.com/v1
+kind: DeployConfig
+metadata:
+  name: life-logger
+  namespace: life-logger
+spec:
+  resourceType: Deployment
+  autodeploy: true
+  repo:
+    owner: kj800x
+    repo: life-logger-2
+    defaultBranch: master
+  spec:
+    strategy:
+      type: Recreate
+    replicas: 1
+    revisionHistoryLimit: 1
+    selector:
+      matchLabels:
+        app: life-logger
+    template:
+      metadata:
+        labels:
+          app: life-logger
+      spec:
+        imagePullSecrets:
+          - name: ghcr-kj800x
+        containers:
+          - name: life-logger
+            image: ghcr.io/kj800x/life-logger-2
+            command: ["life-logger-2-rs"]
+            env:
+              - name: SERVER_HOST
+                value: "0.0.0.0"
+              - name: SERVER_PORT
+                value: "8080"
+              - name: DATABASE_PATH
+                value: "/data/db.db"
+            ports:
+              - containerPort: 8080
+                protocol: TCP
+            volumeMounts:
+              - name: data
+                mountPath: /data
+        volumes:
+          - name: data
+            nfs:
+              server: 10.60.1.15
+              path: /data/services/life-logger
