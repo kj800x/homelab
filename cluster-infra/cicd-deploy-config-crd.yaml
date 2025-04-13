@@ -1,0 +1,91 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: deployconfigs.cicd.coolkev.com
+spec:
+  group: cicd.coolkev.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                repo:
+                  type: object
+                  required:
+                    - owner
+                    - repo
+                    - defaultBranch
+                  properties:
+                    owner:
+                      type: string
+                    repo:
+                      type: string
+                    defaultBranch:
+                      type: string
+                autodeploy:
+                  type: boolean
+                resourceType:
+                  type: string
+                  enum: [Deployment, CronJob]
+                spec:
+                  type: object
+                  description: "Kubernetes resource spec (Deployment or CronJob)"
+                  x-kubernetes-preserve-unknown-fields: true
+              required:
+                - repo
+                - spec
+                - autodeploy
+                - resourceType
+            status:
+              type: object
+              properties:
+                currentSha:
+                  type: string
+                wantedSha:
+                  type: string
+                latestSha:
+                  type: string
+                currentBranch:
+                  type: string
+                autodeploy:
+                  type: boolean
+      additionalPrinterColumns:
+        - name: Repo
+          jsonPath: .spec.repo.repo
+          type: string
+        - name: Default Branch
+          jsonPath: .spec.repo.defaultBranch
+          type: string
+        - name: Current Branch
+          jsonPath: .status.currentBranch
+          type: string
+        - name: Current SHA
+          jsonPath: .status.currentSha
+          type: string
+        - name: Wanted SHA
+          jsonPath: .status.wantedSha
+          type: string
+        - name: Resource Type
+          jsonPath: .spec.resourceType
+          type: string
+        - name: Autodeploy
+          jsonPath: .status.autodeploy
+          type: boolean
+        - name: Age
+          jsonPath: .metadata.creationTimestamp
+          type: date
+      subresources:
+        status: {}
+  scope: Namespaced
+  names:
+    plural: deployconfigs
+    singular: deployconfig
+    kind: DeployConfig
+    shortNames:
+      - dc
