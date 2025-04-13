@@ -1,53 +1,57 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: cicd.coolkev.com/v1
+kind: DeployConfig
 metadata:
   name: timelapse-service-rs
   namespace: home-sensors
-  labels:
-    app: timelapse-service-rs
 spec:
-  replicas: 1
-  revisionHistoryLimit: 1
-  selector:
-    matchLabels:
-      app: timelapse-service-rs
-  template:
-    metadata:
-      labels:
+  resourceType: Deployment
+  autodeploy: false
+  repo:
+    owner: kj800x
+    repo: timelapse-service-rs
+    defaultBranch: master
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 1
+    selector:
+      matchLabels:
         app: timelapse-service-rs
-    spec:
-      imagePullSecrets:
-        - name: ghcr-kj800x
-      containers:
-        - name: timelapse-service-rs
-          image: ghcr.io/kj800x/timelapse-service-rs:commit-9b03d4c1426202d67c44f62d2da21cb0da664967
-          command: ["timelapse-service-rs"]
-          workingDir: "/usr/src/timelapse-service-rs"
-          env:
-            - name: OUTPUT_FOLDER
-              value: "/data"
-            - name: PORT
-              value: "8080"
-          ports:
-            - containerPort: 8080
-          volumeMounts:
-            - name: data-volume
-              mountPath: /data
-          livenessProbe:
-            httpGet:
-              path: /healthcheck
-              port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /healthcheck
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 10
-
-      volumes:
-        - name: data-volume
-          nfs:
-            server: 10.60.1.15
-            path: /data/archive/archive/timelapse
+    template:
+      metadata:
+        labels:
+          app: timelapse-service-rs
+      spec:
+        imagePullSecrets:
+          - name: ghcr-kj800x
+        containers:
+          - name: timelapse-service-rs
+            image: ghcr.io/kj800x/timelapse-service-rs:commit-9b03d4c1426202d67c44f62d2da21cb0da664967
+            command: ["timelapse-service-rs"]
+            workingDir: "/usr/src/timelapse-service-rs"
+            env:
+              - name: OUTPUT_FOLDER
+                value: "/data"
+              - name: PORT
+                value: "8080"
+            ports:
+              - containerPort: 8080
+            volumeMounts:
+              - name: data-volume
+                mountPath: /data
+            livenessProbe:
+              httpGet:
+                path: /healthcheck
+                port: 8080
+              initialDelaySeconds: 10
+              periodSeconds: 30
+            readinessProbe:
+              httpGet:
+                path: /healthcheck
+                port: 8080
+              initialDelaySeconds: 5
+              periodSeconds: 10
+        volumes:
+          - name: data-volume
+            nfs:
+              server: 10.60.1.15
+              path: /data/archive/archive/timelapse
