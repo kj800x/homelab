@@ -16,6 +16,7 @@ spec:
       labels:
         app.kubernetes.io/name: external-dns
     spec:
+      serviceAccountName: cicd-operator # Piggyback on cicd-operator for now. Clean up later.
       containers:
         - name: external-dns
           image: registry.k8s.io/external-dns/external-dns:v0.16.1
