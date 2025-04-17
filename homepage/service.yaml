@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations: null
   name: homepage
   namespace: homepage
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: home.home.coolkev.com
 spec:
   ports:
     - name: http
