@@ -27,7 +27,7 @@ spec:
             - --policy=upsert-only
             - --aws-zone-type=public
             - --registry=txt
-            - --log-level=debug
+            - --log-level=info
           env:
             - name: AWS_DEFAULT_REGION
               value: us-east-1
@@ -40,4 +40,4 @@ spec:
       volumes:
         - name: aws-credentials
           secret:
-            secretName: external-dns-file
+            secretName: externaldns-aws-key-file
