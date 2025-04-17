@@ -24,6 +24,8 @@ kind: Service
 metadata:
   name: kubernetes-dashboard-lb
   namespace: kubernetes-dashboard
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: k8s.home.coolkev.com
 spec:
   type: LoadBalancer
   selector:

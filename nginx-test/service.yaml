@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: nginx
   namespace: default
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: nginx.home.coolkev.com
 spec:
   type: LoadBalancer
   selector:

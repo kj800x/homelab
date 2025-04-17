@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: bastion
   namespace: bastion
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: bastion.home.coolkev.com
 spec:
   type: LoadBalancer
   ports:

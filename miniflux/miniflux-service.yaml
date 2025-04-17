@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: miniflux
   namespace: miniflux
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: miniflux.home.coolkev.com
 spec:
   type: LoadBalancer
   selector:

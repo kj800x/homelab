@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: mosquitto
   namespace: mosquitto
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: mqtt.home.coolkev.com
 spec:
   type: LoadBalancer
   selector:

@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: docker-wyze-bridge
   namespace: home-sensors
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: wyze.home.coolkev.com
 spec:
   type: LoadBalancer
   selector:

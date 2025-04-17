@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: victoria-metrics-lb
   namespace: victoria-metrics
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: vm.home.coolkev.com
 spec:
   type: LoadBalancer
   selector:
