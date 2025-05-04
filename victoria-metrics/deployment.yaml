@@ -29,7 +29,7 @@ spec:
             - "--promscrape.config=/etc/prometheus/scrape/prometheus.yml"
             - "-maxLabelsPerTimeseries=35"
             - "-selfScrapeInterval=10s"
-            - "-retentionPeriod=2y"
+            - "-retentionPeriod=99y"
           ports:
             - containerPort: 8428
           volumeMounts:
