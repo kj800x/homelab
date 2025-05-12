@@ -16,6 +16,7 @@ spec:
       spec:
         template:
           spec:
+            restartPolicy: OnFailure
             containers:
               - name: webhooks-enforcer
                 image: ghcr.io/kj800x/webhooks-enforcer
