@@ -2,7 +2,7 @@ apiVersion: cicd.coolkev.com/v1
 kind: DeployConfig
 metadata:
   name: webhooks-enforcer
-  namespace: cluster-infra
+  namespace: argocd
 spec:
   resourceType: CronJob
   autodeploy: false
