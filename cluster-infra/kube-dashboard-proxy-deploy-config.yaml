@@ -1,0 +1,40 @@
+apiVersion: cicd.coolkev.com/v1
+kind: DeployConfig
+metadata:
+  name: auth-adder
+  namespace: kubernetes-dashboard
+spec:
+  resourceType: Deployment
+  autodeploy: true
+  repo:
+    owner: kj800x
+    repo: auth-adder
+    defaultBranch: master
+  spec:
+    strategy:
+      type: Recreate
+    replicas: 1
+    revisionHistoryLimit: 1
+    selector:
+      matchLabels:
+        app: auth-adder
+    template:
+      metadata:
+        labels:
+          app: auth-adder
+      spec:
+        imagePullSecrets:
+          - name: ghcr-kj800x
+        containers:
+          - name: auth-adder
+            image: ghcr.io/kj800x/auth-adder
+            env:
+              - name: UPSTREAM_URL
+                value: "https://kubernetes-dashboard-lb.kubernetes-dashboard.svc.cluster.local"
+              - name: PORT
+                value: "80"
+              - name: BEARER_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: admin-user-token
+                    key: token
