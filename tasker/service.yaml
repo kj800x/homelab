@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tasker
+  namespace: tasker
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: tasker.home.coolkev.com
+spec:
+  type: LoadBalancer
+  selector:
+    app: tasker
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
