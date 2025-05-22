@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: victoria-metrics
-          image: victoriametrics/victoria-metrics
+          image: victoriametrics/victoria-metrics:v1.117.1
           command:
             - "/victoria-metrics-prod"
           args:
