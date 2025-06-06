@@ -18,6 +18,8 @@ kind: Ingress
 metadata:
   name: nginx-ingress
   namespace: default
+  annotations:
+    external-dns.alpha.kubernetes.io/target: nginx-t.coolkev.com
 spec:
   rules:
   - http:
