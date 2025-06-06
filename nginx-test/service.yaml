@@ -3,13 +3,29 @@ kind: Service
 metadata:
   name: nginx
   namespace: default
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: nginx.home.coolkev.com
 spec:
   type: LoadBalancer
   selector:
     app: nginx
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: default
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              name: http
