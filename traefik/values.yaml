@@ -2,3 +2,9 @@ ingressRoute:
   dashboard:
     enabled: true
     entryPoints: ["web"]
+
+providers:
+  kubernetesingress:
+    publishedService:
+      enabled: true
+      pathOverride: "traefik/traefik"
