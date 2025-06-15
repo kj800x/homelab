@@ -10,9 +10,11 @@ spec:
   selector:
     app: minecraft
   ports:
-    - protocol: TCP
+    - name: minecraft
+      protocol: TCP
       port: 25565
       targetPort: 25565
-    - protocol: TCP
+    - name: rcon
+      protocol: TCP
       port: 25575
       targetPort: 25575
