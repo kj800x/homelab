@@ -14,9 +14,9 @@ spec:
       protocol: TCP
       port: 25565
       targetPort: 25565
-      nodePort: 25565
+      nodePort: 30565
     - name: rcon
       protocol: TCP
       port: 25575
       targetPort: 25575
-      nodePort: 25575
+      nodePort: 30575
