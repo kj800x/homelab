@@ -6,7 +6,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: minecraft.home.coolkev.com
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: minecraft
   ports:
