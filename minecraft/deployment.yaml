@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft
+  namespace: minecraft
+  labels:
+    app: minecraft
+spec:
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+  template:
+    metadata:
+      labels:
+        app: minecraft
+    spec:
+      containers:
+        - name: minecraft
+          image: itzg/minecraft-server
+          env:
+            - name: EULA
+              value: "TRUE"
+            - name: DIFFICULTY
+              value: "normal"
+            - name: MODE
+              value: "survival"
+            - name: ENABLE_RCON
+              value: "true"
+            - name: RCON_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: minecraft-rcon-secret
+                  key: password
+          ports:
+            - containerPort: 25565
+              name: minecraft
+            - containerPort: 25575
+              name: rcon
+          livenessProbe:
+            tcpSocket:
+              port: minecraft
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: minecraft
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          volumeMounts:
+            - name: minecraft-data
+              mountPath: /data
+      volumes:
+        - name: minecraft-data
+          nfs:
+            server: 10.60.1.15
+            path: /data/services/minecraft
