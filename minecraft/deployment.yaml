@@ -22,6 +22,8 @@ spec:
         - name: minecraft
           image: itzg/minecraft-server
           env:
+            - name: MEMORY
+              value: "4G"
             - name: EULA
               value: "TRUE"
             - name: DIFFICULTY
