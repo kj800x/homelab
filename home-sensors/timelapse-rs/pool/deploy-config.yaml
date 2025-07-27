@@ -34,7 +34,7 @@ spec:
               - name: CAMERA_TYPE
                 value: "RTSP"
               - name: SLEEP_SECS
-                value: "900"
+                value: "300"
               - name: FEED_NAME
                 value: "pool"
               - name: FEED_URL
