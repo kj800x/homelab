@@ -3,10 +3,8 @@ kind: Service
 metadata:
   name: timelapse-service-rs
   namespace: home-sensors
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: timelapse.home.coolkev.com
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: timelapse-service-rs
   ports:
