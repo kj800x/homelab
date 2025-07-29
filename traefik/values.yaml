@@ -15,8 +15,6 @@ certificatesResolvers:
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       email: kevin@coolkev.com
       storage: /data/acme.json
-      domains:
-        - main: "*.coolkev.com"
       dnsChallenge:
         provider: route53
         resolvers:
