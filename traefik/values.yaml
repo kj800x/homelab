@@ -11,7 +11,7 @@ certificatesResolvers:
     acme:
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       email: kevin@coolkev.com
-      storage: /data/acme.json
+      storage: /acme/acme.json
       dnsChallenge:
         provider: route53
         resolvers:
@@ -35,20 +35,14 @@ envFrom:
 deployment:
   additionalVolumeMounts:
     - name: acme-storage
-      mountPath: /data
+      mountPath: /acme
   additionalVolumes:
     - name: acme-storage
       nfs:
         server: 10.60.1.15
         path: /data/services/acme
 
-persistence:
-  enabled: true
-  name: acme-storage
-  mountPath: /data
-  type: custom
 # Enable the dashboard
-
 api:
   dashboard: true
 
