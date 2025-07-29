@@ -4,8 +4,9 @@ metadata:
   name: timelapse-service-rs
   namespace: home-sensors
   annotations:
-    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
     external-dns.alpha.kubernetes.io/hostname: timelapse.home.coolkev.com
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
 spec:
   ingressClassName: traefik
   rules:
