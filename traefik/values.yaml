@@ -1,21 +1,10 @@
-ingressRoute:
-  dashboard:
-    enabled: true
-    entryPoints: ["web"]
-
-ports:
-  traefik:
-    port: 9000
-    expose:
-      default: true
-    exposedPort: 9000
-    protocol: TCP
-
 providers:
   kubernetesIngress:
     publishedService:
       enabled: true
       pathOverride: "traefik/traefik"
+
+# Manage SSL Certificates
 
 certificatesResolvers:
   letsencrypt:
@@ -54,3 +43,21 @@ deployment:
         server: 10.60.1.15
         path: /data/services/acme
 
+# Enable the dashboard
+
+api:
+  dashboard: true
+
+ingressRoute:
+  dashboard:
+    enabled: true
+    entryPoints:
+      - traefik
+
+ports:
+  traefik:
+    port: 9000
+    expose:
+      default: true
+    exposedPort: 9000
+    protocol: TCP
