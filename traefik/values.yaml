@@ -33,11 +33,11 @@ envFrom:
       name: traefik-route53-credentials
 
 deployment:
-  additionalVolumeMounts:
+  volumeMounts:
     - name: acme-storage
       mountPath: /data
 
-  additionalVolumes:
+  volumes:
     - name: acme-storage
       nfs:
         server: 10.60.1.15
