@@ -10,8 +10,6 @@ providers:
       pathOverride: "traefik/traefik"
 
 certificatesResolvers:
-  default:
-    certResolver: letsencrypt
   letsencrypt:
     acme:
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory

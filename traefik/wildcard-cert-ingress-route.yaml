@@ -1,0 +1,52 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: wildcard-cert-bootstrap
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`wildcard-bootstrap.coolkev.com`)
+      kind: Rule
+      services:
+        - name: noop
+          port: 80
+  tls:
+    certResolver: letsencrypt
+    domains:
+      - main: "*.coolkev.com"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: noop
+  namespace: traefik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: noop
+  template:
+    metadata:
+      labels:
+        app: noop
+    spec:
+      containers:
+        - name: noop
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: noop
+  namespace: traefik
+spec:
+  selector:
+    app: noop
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
