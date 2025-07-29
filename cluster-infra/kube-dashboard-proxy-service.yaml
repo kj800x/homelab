@@ -3,10 +3,8 @@ kind: Service
 metadata:
   name: auth-adder
   namespace: kubernetes-dashboard
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: k8s.home.coolkev.com
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: auth-adder
   ports:

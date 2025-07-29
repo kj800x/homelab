@@ -3,10 +3,8 @@ kind: Service
 metadata:
   name: life-logger
   namespace: life-logger
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: ll.home.coolkev.com
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: life-logger
   ports:

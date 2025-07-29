@@ -3,10 +3,8 @@ kind: Service
 metadata:
   name: grafana
   namespace: grafana
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: grafana.home.coolkev.com
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: grafana
   ports:

@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: homepage
   namespace: homepage
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: home.home.coolkev.com
 spec:
   ports:
     - name: http
@@ -14,4 +12,4 @@ spec:
   selector:
     app.kubernetes.io/instance: homepage
     app.kubernetes.io/name: homepage
-  type: LoadBalancer
+  type: ClusterIP

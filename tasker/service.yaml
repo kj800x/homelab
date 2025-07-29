@@ -3,10 +3,8 @@ kind: Service
 metadata:
   name: tasker
   namespace: tasker
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: tasker.home.coolkev.com
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: tasker
   ports:
