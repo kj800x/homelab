@@ -33,6 +33,7 @@ envFrom:
       name: traefik-route53-credentials
 
 deployment:
+  enabled: true
   additionalVolumeMounts:
     - name: acme-storage
       mountPath: /acme
