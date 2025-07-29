@@ -32,11 +32,12 @@ envFrom:
   - secretRef:
       name: traefik-route53-credentials
 
+additionalVolumeMounts:
+  - name: acme-storage
+    mountPath: /acme
+
 deployment:
   enabled: true
-  additionalVolumeMounts:
-    - name: acme-storage
-      mountPath: /acme
   additionalVolumes:
     - name: acme-storage
       nfs:
