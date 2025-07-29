@@ -10,17 +10,30 @@ providers:
       pathOverride: "traefik/traefik"
 
 certificatesResolvers:
+  default:
+    certResolver: letsencrypt
   letsencrypt:
     acme:
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       email: kevin@coolkev.com
       storage: /data/acme.json
+      domains:
+        - main: "*.coolkev.com"
       dnsChallenge:
         provider: route53
         resolvers:
           - 1.1.1.1:53
           - 8.8.8.8:53
         delayBeforeCheck: 0
+
+tls:
+  options:
+    default:
+      sniStrict: false
+  stores:
+    default:
+      defaultGeneratedCert:
+        resolver: letsencrypt
 
 envFrom:
   - secretRef:
