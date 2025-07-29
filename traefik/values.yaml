@@ -61,3 +61,6 @@ ports:
       default: true
     exposedPort: 9000
     protocol: TCP
+
+global:
+  sendAnonymousUsage: true
