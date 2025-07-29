@@ -3,6 +3,13 @@ ingressRoute:
     enabled: true
     entryPoints: ["web"]
 
+ports:
+  traefik:
+    port: 9000
+    expose: true
+    exposedPort: 9000
+    protocol: TCP
+
 providers:
   kubernetesIngress:
     publishedService:
@@ -45,3 +52,4 @@ deployment:
       nfs:
         server: 10.60.1.15
         path: /data/services/acme
+
