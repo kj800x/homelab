@@ -8,3 +8,30 @@ providers:
     publishedService:
       enabled: true
       pathOverride: "traefik/traefik"
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      email: kevin@coolkev.com
+      storage: /data/acme.json
+      dnsChallenge:
+        provider: route53
+        resolvers:
+          - 1.1.1.1:53
+          - 8.8.8.8:53
+        delayBeforeCheck: 0
+
+envFrom:
+  - secretRef:
+      name: traefik-route53-credentials
+
+volumes:
+  - name: acme-storage
+    nfs:
+      server: 10.60.1.15
+      path: /data/services/acme
+
+volumeMounts:
+  - mountPath: /data
+    name: acme-storage
