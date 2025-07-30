@@ -89,3 +89,7 @@ ports:
 
 global:
   sendAnonymousUsage: true
+
+accessLog:
+  enabled: true
+  format: common  # or json
