@@ -90,6 +90,7 @@ ports:
 global:
   sendAnonymousUsage: true
 
-accessLog:
-  enabled: true
-  format: common  # or json
+logs:
+  access:
+    enabled: true
+    format: common
