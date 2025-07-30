@@ -16,6 +16,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: cicd-service
+                name: cicd
                 port:
                   number: 80
