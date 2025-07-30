@@ -4,6 +4,19 @@ providers:
       enabled: true
       pathOverride: "traefik/traefik"
 
+# Entry points configuration
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    address: ":443"
+
 # Manage SSL Certificates
 
 certificatesResolvers:
@@ -52,9 +65,19 @@ ingressRoute:
   dashboard:
     enabled: true
     entryPoints:
-      - traefik
+      - websecure
 
 ports:
+  web:
+    port: 80
+    expose: true
+    exposedPort: 80
+    protocol: TCP
+  websecure:
+    port: 443
+    expose: true
+    exposedPort: 443
+    protocol: TCP
   traefik:
     port: 9000
     expose:
