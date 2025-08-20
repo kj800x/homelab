@@ -63,9 +63,7 @@ api:
 
 ingressRoute:
   dashboard:
-    enabled: true
-    entryPoints:
-      - websecure
+    enabled: false
 
 ports:
   web:
