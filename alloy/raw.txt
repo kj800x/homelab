@@ -1,0 +1,1667 @@
+
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/default-container: alloy
+    creationTimestamp: "2025-11-04T13:39:14Z"
+    generateName: alloy-
+    labels:
+      app.kubernetes.io/instance: alloy
+      app.kubernetes.io/name: alloy
+      controller-revision-hash: 68cdd47995
+      pod-template-generation: "2"
+    name: alloy-jb4nz
+    namespace: grafana
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: alloy
+      uid: 221fbb4c-c908-4be1-b9b4-8bab99cfa3cd
+    resourceVersion: "12713871"
+    uid: 0635e0ef-0848-4509-8f7d-7a23e5303181
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - kyogre
+    containers:
+    - args:
+      - run
+      - /etc/alloy/config.alloy
+      - --storage.path=/tmp/alloy
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --server.http.ui-path-prefix=/
+      - --stability.level=generally-available
+      env:
+      - name: ALLOY_DEPLOY_MODE
+        value: helm
+      - name: HOSTNAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: spec.nodeName
+      image: docker.io/grafana/alloy:v1.11.3
+      imagePullPolicy: IfNotPresent
+      name: alloy
+      ports:
+      - containerPort: 12345
+        name: http-metrics
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /-/ready
+          port: 12345
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/alloy
+        name: config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-26wg4
+        readOnly: true
+    - args:
+      - --watched-dir=/etc/alloy
+      - --reload-url=http://localhost:12345/-/reload
+      image: quay.io/prometheus-operator/prometheus-config-reloader:v0.81.0
+      imagePullPolicy: IfNotPresent
+      name: config-reloader
+      resources:
+        requests:
+          cpu: 10m
+          memory: 50Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/alloy
+        name: config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-26wg4
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: kyogre
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: alloy
+    serviceAccountName: alloy
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: alloy-config
+      name: config
+    - name: kube-api-access-26wg4
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:39:15Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:39:14Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:39:24Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:39:24Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:39:14Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://8391f53afae597e5dc5934a7aba9da800c09ee2f11359a96f2a38a1eb4d8bea6
+      image: docker.io/grafana/alloy:v1.11.3
+      imageID: docker.io/grafana/alloy@sha256:8c7256f412feb9f5f48f9f6f9394dc97ca887f63dea9304f347970ecc1787669
+      lastState: {}
+      name: alloy
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-11-04T13:39:14Z"
+      volumeMounts:
+      - mountPath: /etc/alloy
+        name: config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-26wg4
+        readOnly: true
+        recursiveReadOnly: Disabled
+    - containerID: containerd://f423bdf6b7ceaf230d218ea250aed408f285a75449835d5a581dae745586ffe4
+      image: quay.io/prometheus-operator/prometheus-config-reloader:v0.81.0
+      imageID: quay.io/prometheus-operator/prometheus-config-reloader@sha256:959d47672fbff2776a04ec62b8afcec89e8c036af84dc5fade50019dab212746
+      lastState: {}
+      name: config-reloader
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-11-04T13:39:14Z"
+      volumeMounts:
+      - mountPath: /etc/alloy
+        name: config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-26wg4
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.60.1.4
+    hostIPs:
+    - ip: 10.60.1.4
+    - ip: fdbc:f00b:db1f:33b4:9eb6:d0ff:fefd:18d1
+    phase: Running
+    podIP: 10.42.1.68
+    podIPs:
+    - ip: 10.42.1.68
+    qosClass: Burstable
+    startTime: "2025-11-04T13:39:14Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/default-container: alloy
+    creationTimestamp: "2025-11-04T13:38:43Z"
+    generateName: alloy-
+    labels:
+      app.kubernetes.io/instance: alloy
+      app.kubernetes.io/name: alloy
+      controller-revision-hash: 68cdd47995
+      pod-template-generation: "2"
+    name: alloy-tvcpf
+    namespace: grafana
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: alloy
+      uid: 221fbb4c-c908-4be1-b9b4-8bab99cfa3cd
+    resourceVersion: "12713832"
+    uid: cc5c3260-2d57-4e94-abec-2250ca252c7e
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - entei
+    containers:
+    - args:
+      - run
+      - /etc/alloy/config.alloy
+      - --storage.path=/tmp/alloy
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --server.http.ui-path-prefix=/
+      - --stability.level=generally-available
+      env:
+      - name: ALLOY_DEPLOY_MODE
+        value: helm
+      - name: HOSTNAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: spec.nodeName
+      image: docker.io/grafana/alloy:v1.11.3
+      imagePullPolicy: IfNotPresent
+      name: alloy
+      ports:
+      - containerPort: 12345
+        name: http-metrics
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /-/ready
+          port: 12345
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/alloy
+        name: config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-gvx2t
+        readOnly: true
+    - args:
+      - --watched-dir=/etc/alloy
+      - --reload-url=http://localhost:12345/-/reload
+      image: quay.io/prometheus-operator/prometheus-config-reloader:v0.81.0
+      imagePullPolicy: IfNotPresent
+      name: config-reloader
+      resources:
+        requests:
+          cpu: 10m
+          memory: 50Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/alloy
+        name: config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-gvx2t
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: entei
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: alloy
+    serviceAccountName: alloy
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: alloy-config
+      name: config
+    - name: kube-api-access-gvx2t
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:38:44Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:38:43Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:39:03Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:39:03Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T13:38:43Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://e61d2e47fe1486b283992e8711cfa73353f2a736f710e155a4d5505cfb115770
+      image: docker.io/grafana/alloy:v1.11.3
+      imageID: docker.io/grafana/alloy@sha256:8c7256f412feb9f5f48f9f6f9394dc97ca887f63dea9304f347970ecc1787669
+      lastState: {}
+      name: alloy
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-11-04T13:38:44Z"
+      volumeMounts:
+      - mountPath: /etc/alloy
+        name: config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-gvx2t
+        readOnly: true
+        recursiveReadOnly: Disabled
+    - containerID: containerd://c05266442222c712bc59a857df1df0dee230ee289b970c0af689c2b858b437fc
+      image: quay.io/prometheus-operator/prometheus-config-reloader:v0.81.0
+      imageID: quay.io/prometheus-operator/prometheus-config-reloader@sha256:959d47672fbff2776a04ec62b8afcec89e8c036af84dc5fade50019dab212746
+      lastState: {}
+      name: config-reloader
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-11-04T13:38:44Z"
+      volumeMounts:
+      - mountPath: /etc/alloy
+        name: config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-gvx2t
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.60.1.15
+    hostIPs:
+    - ip: 10.60.1.15
+    - ip: fdbc:f00b:db1f:33b4:ca7f:54ff:fe0b:a954
+    phase: Running
+    podIP: 10.42.0.170
+    podIPs:
+    - ip: 10.42.0.170
+    qosClass: Burstable
+    startTime: "2025-11-04T13:38:43Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2025-03-17T14:04:30Z"
+    generateName: grafana-5997f59f95-
+    labels:
+      app: grafana
+      pod-template-hash: 5997f59f95
+    name: grafana-5997f59f95-drbrq
+    namespace: grafana
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: grafana-5997f59f95
+      uid: 77ef59ab-1f20-4aa0-9dde-42caf6aae0e2
+    resourceVersion: "12566451"
+    uid: 27d978b2-4688-46ed-ad65-74b8a8c1b6af
+  spec:
+    containers:
+    - command:
+      - /run.sh
+      env:
+      - name: GF_DATABASE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_PASSWORD
+            name: grafana-postgres-secret
+      - name: GF_DATABASE_SSL_MODE
+        value: disable
+      - name: GF_DATABASE_TYPE
+        value: postgres
+      - name: GF_DATABASE_HOST
+        value: postgres.grafana.svc.cluster.local:5432
+      - name: GF_DATABASE_NAME
+        value: grafana
+      - name: GF_DATABASE_USER
+        value: root
+      - name: GF_PATHS_CONFIG
+        value: /etc/grafana/grafana.ini
+      - name: GF_PATHS_DATA
+        value: /var/lib/grafana
+      - name: GF_PATHS_HOME
+        value: /usr/share/grafana
+      - name: GF_PATHS_LOGS
+        value: /var/log/grafana
+      - name: GF_PATHS_PLUGINS
+        value: /var/lib/grafana/plugins
+      - name: GF_PATHS_PROVISIONING
+        value: /etc/grafana/provisioning
+      image: grafana/grafana-enterprise
+      imagePullPolicy: Always
+      name: grafana
+      ports:
+      - containerPort: 3000
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/grafana
+        name: grafana-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-48ztx
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: entei
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: grafana-data
+      nfs:
+        path: /data/services/grafana
+        server: 10.60.1.15
+    - name: kube-api-access-48ztx
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-01T20:15:58Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-03-17T14:04:30Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-01T20:15:58Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-01T20:15:58Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-03-17T14:04:30Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://c5ce0e5e6f952023658dcfac77324d7d67e8ad2c737c683e82b0137e395e94b8
+      image: docker.io/grafana/grafana-enterprise:latest
+      imageID: docker.io/grafana/grafana-enterprise@sha256:0fa9cbdd2826d3866238a22f12330aa70f263129324509756fe0ee1b570a8e21
+      lastState:
+        terminated:
+          containerID: containerd://73490cd0adcbf7891b0c0a7c186704a827e7b38bae5eb69d19053fc00767e9a8
+          exitCode: 255
+          finishedAt: "2025-11-01T20:14:13Z"
+          reason: Unknown
+          startedAt: "2025-09-13T21:37:27Z"
+      name: grafana
+      ready: true
+      restartCount: 26
+      started: true
+      state:
+        running:
+          startedAt: "2025-11-01T20:15:58Z"
+      volumeMounts:
+      - mountPath: /var/lib/grafana
+        name: grafana-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-48ztx
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.60.1.15
+    hostIPs:
+    - ip: 10.60.1.15
+    - ip: fdbc:f00b:db1f:33b4:ca7f:54ff:fe0b:a954
+    phase: Running
+    podIP: 10.42.0.132
+    podIPs:
+    - ip: 10.42.0.132
+    qosClass: BestEffort
+    startTime: "2025-03-17T14:04:30Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2025-11-04T00:37:09Z"
+    generateName: loki-679cd59d79-
+    labels:
+      app: loki
+      pod-template-hash: 679cd59d79
+    name: loki-679cd59d79-z4lhz
+    namespace: grafana
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: loki-679cd59d79
+      uid: aaee0969-7255-4abf-925e-efdf5091a5f9
+    resourceVersion: "12685425"
+    uid: 5ca86296-68fc-4553-95d4-9ed64dd9df59
+  spec:
+    containers:
+    - args:
+      - --config.file=/mnt/config/loki-config.yaml
+      image: grafana/loki:3.5.7
+      imagePullPolicy: IfNotPresent
+      name: loki
+      ports:
+      - containerPort: 3100
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /mnt/config
+        name: loki-config
+        readOnly: true
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-59tzs
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: kyogre
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: loki-config
+      nfs:
+        path: /data/services/loki/config
+        server: 10.60.1.15
+    - name: kube-api-access-59tzs
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T00:37:14Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T00:37:09Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T00:37:14Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T00:37:14Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-04T00:37:09Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://ea1c3f3376f94d529ffa4bb030b5e38703dfafaf5e80ccaa35e479c77b496044
+      image: docker.io/grafana/loki:3.5.7
+      imageID: docker.io/grafana/loki@sha256:0eaee7bf39cc83aaef46914fb58f287d4f4c4be6ec96b86c2ed55719a75e49c8
+      lastState: {}
+      name: loki
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-11-04T00:37:14Z"
+      volumeMounts:
+      - mountPath: /mnt/config
+        name: loki-config
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-59tzs
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.60.1.4
+    hostIPs:
+    - ip: 10.60.1.4
+    - ip: fdbc:f00b:db1f:33b4:9eb6:d0ff:fefd:18d1
+    phase: Running
+    podIP: 10.42.1.51
+    podIPs:
+    - ip: 10.42.1.51
+    qosClass: BestEffort
+    startTime: "2025-11-04T00:37:09Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2025-03-17T14:04:30Z"
+    generateName: postgres-5b6d78758-
+    labels:
+      app: postgres
+      pod-template-hash: 5b6d78758
+    name: postgres-5b6d78758-bc2wn
+    namespace: grafana
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: postgres-5b6d78758
+      uid: 1f3e92cd-eca8-4bd0-831c-17bcace401ef
+    resourceVersion: "12565635"
+    uid: 7400c2c8-9fcb-4309-88bf-05e732422910
+  spec:
+    containers:
+    - args:
+      - postgres
+      command:
+      - docker-entrypoint.sh
+      env:
+      - name: POSTGRES_DB
+        value: grafana
+      - name: POSTGRES_USER
+        value: root
+      - name: POSTGRES_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_PASSWORD
+            name: grafana-postgres-secret
+      - name: PGDATA
+        value: /var/lib/postgresql/data
+      image: postgres:15
+      imagePullPolicy: IfNotPresent
+      name: postgres
+      ports:
+      - containerPort: 5432
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: postgres-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-n8n9j
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: entei
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: postgres-data
+      nfs:
+        path: /data/services/grafana-postgres
+        server: 10.60.1.15
+    - name: kube-api-access-n8n9j
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-01T20:14:24Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-03-17T14:04:30Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-01T20:14:24Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-11-01T20:14:24Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-03-17T14:04:30Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://d3195dc9590110bbcef7ceba1ea9cb544260b833b28bf4beb019c2618ee91af8
+      image: docker.io/library/postgres:15
+      imageID: docker.io/library/postgres@sha256:b3a3b666dfb3a7dca6858ef90bad3557da4d4e1532c090f6fe6d4de76d98ab6f
+      lastState:
+        terminated:
+          containerID: containerd://cbfda5f8631c6f05d1b20e8b0524ab2f0573f2e0e032a514784430b049ef4036
+          exitCode: 255
+          finishedAt: "2025-11-01T20:14:13Z"
+          reason: Unknown
+          startedAt: "2025-09-13T21:35:50Z"
+      name: postgres
+      ready: true
+      restartCount: 11
+      started: true
+      state:
+        running:
+          startedAt: "2025-11-01T20:14:23Z"
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: postgres-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-n8n9j
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.60.1.15
+    hostIPs:
+    - ip: 10.60.1.15
+    - ip: fdbc:f00b:db1f:33b4:ca7f:54ff:fe0b:a954
+    phase: Running
+    podIP: 10.42.0.146
+    podIPs:
+    - ip: 10.42.0.146
+    qosClass: BestEffort
+    startTime: "2025-03-17T14:04:30Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: alloy
+      meta.helm.sh/release-namespace: grafana
+    creationTimestamp: "2025-11-04T13:31:35Z"
+    labels:
+      app.kubernetes.io/component: networking
+      app.kubernetes.io/instance: alloy
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: alloy
+      app.kubernetes.io/part-of: alloy
+      app.kubernetes.io/version: v1.11.3
+      helm.sh/chart: alloy-1.4.0
+    name: alloy
+    namespace: grafana
+    resourceVersion: "12713383"
+    uid: b0ad6088-1d2f-4d03-8688-1feafec85c19
+  spec:
+    clusterIP: 10.43.219.2
+    clusterIPs:
+    - 10.43.219.2
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 12345
+      protocol: TCP
+      targetPort: 12345
+    selector:
+      app.kubernetes.io/instance: alloy
+      app.kubernetes.io/name: alloy
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"grafana"},"name":"grafana","namespace":"grafana"},"spec":{"ports":[{"name":"http-default","port":80,"protocol":"TCP","targetPort":3000},{"name":"http","port":3000,"protocol":"TCP","targetPort":3000}],"selector":{"app":"grafana"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-02-21T20:34:35Z"
+    labels:
+      app.kubernetes.io/instance: grafana
+    name: grafana
+    namespace: grafana
+    resourceVersion: "7466440"
+    uid: 061afbee-7a41-471c-9fb3-f0e768731110
+  spec:
+    clusterIP: 10.43.31.230
+    clusterIPs:
+    - 10.43.31.230
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-default
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+    - name: http
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: grafana
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"grafana"},"name":"loki","namespace":"grafana"},"spec":{"ports":[{"name":"http-default","port":80,"protocol":"TCP","targetPort":3100},{"name":"http","port":3100,"protocol":"TCP","targetPort":3100}],"selector":{"app":"loki"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-11-04T00:37:09Z"
+    labels:
+      app.kubernetes.io/instance: grafana
+    name: loki
+    namespace: grafana
+    resourceVersion: "12685393"
+    uid: 9ef3d0d1-eb35-4255-b67c-1f5547c92bb4
+  spec:
+    clusterIP: 10.43.191.15
+    clusterIPs:
+    - 10.43.191.15
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-default
+      port: 80
+      protocol: TCP
+      targetPort: 3100
+    - name: http
+      port: 3100
+      protocol: TCP
+      targetPort: 3100
+    selector:
+      app: loki
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"grafana"},"name":"postgres","namespace":"grafana"},"spec":{"ports":[{"port":5432,"protocol":"TCP","targetPort":5432}],"selector":{"app":"postgres"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-02-21T20:34:35Z"
+    labels:
+      app.kubernetes.io/instance: grafana
+    name: postgres
+    namespace: grafana
+    resourceVersion: "92092"
+    uid: 7c821d12-485e-498d-919d-36cc7c2fd764
+  spec:
+    clusterIP: 10.43.76.123
+    clusterIPs:
+    - 10.43.76.123
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: postgres
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    annotations:
+      deprecated.daemonset.template.generation: "2"
+      meta.helm.sh/release-name: alloy
+      meta.helm.sh/release-namespace: grafana
+    creationTimestamp: "2025-11-04T13:31:35Z"
+    generation: 2
+    labels:
+      app.kubernetes.io/instance: alloy
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: alloy
+      app.kubernetes.io/part-of: alloy
+      app.kubernetes.io/version: v1.11.3
+      helm.sh/chart: alloy-1.4.0
+    name: alloy
+    namespace: grafana
+    resourceVersion: "12713884"
+    uid: 221fbb4c-c908-4be1-b9b4-8bab99cfa3cd
+  spec:
+    minReadySeconds: 10
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/instance: alloy
+        app.kubernetes.io/name: alloy
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/default-container: alloy
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/instance: alloy
+          app.kubernetes.io/name: alloy
+      spec:
+        containers:
+        - args:
+          - run
+          - /etc/alloy/config.alloy
+          - --storage.path=/tmp/alloy
+          - --server.http.listen-addr=0.0.0.0:12345
+          - --server.http.ui-path-prefix=/
+          - --stability.level=generally-available
+          env:
+          - name: ALLOY_DEPLOY_MODE
+            value: helm
+          - name: HOSTNAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: spec.nodeName
+          image: docker.io/grafana/alloy:v1.11.3
+          imagePullPolicy: IfNotPresent
+          name: alloy
+          ports:
+          - containerPort: 12345
+            name: http-metrics
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /-/ready
+              port: 12345
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/alloy
+            name: config
+        - args:
+          - --watched-dir=/etc/alloy
+          - --reload-url=http://localhost:12345/-/reload
+          image: quay.io/prometheus-operator/prometheus-config-reloader:v0.81.0
+          imagePullPolicy: IfNotPresent
+          name: config-reloader
+          resources:
+            requests:
+              cpu: 10m
+              memory: 50Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/alloy
+            name: config
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: alloy
+        serviceAccountName: alloy
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: alloy-config
+          name: config
+    updateStrategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+      type: RollingUpdate
+  status:
+    currentNumberScheduled: 2
+    desiredNumberScheduled: 2
+    numberAvailable: 2
+    numberMisscheduled: 0
+    numberReady: 2
+    observedGeneration: 2
+    updatedNumberScheduled: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"grafana","app.kubernetes.io/instance":"grafana"},"name":"grafana","namespace":"grafana"},"spec":{"replicas":1,"revisionHistoryLimit":1,"selector":{"matchLabels":{"app":"grafana"}},"template":{"metadata":{"labels":{"app":"grafana"}},"spec":{"containers":[{"command":["/run.sh"],"env":[{"name":"GF_DATABASE_PASSWORD","valueFrom":{"secretKeyRef":{"key":"POSTGRES_PASSWORD","name":"grafana-postgres-secret"}}},{"name":"GF_DATABASE_SSL_MODE","value":"disable"},{"name":"GF_DATABASE_TYPE","value":"postgres"},{"name":"GF_DATABASE_HOST","value":"postgres.grafana.svc.cluster.local:5432"},{"name":"GF_DATABASE_NAME","value":"grafana"},{"name":"GF_DATABASE_USER","value":"root"},{"name":"GF_PATHS_CONFIG","value":"/etc/grafana/grafana.ini"},{"name":"GF_PATHS_DATA","value":"/var/lib/grafana"},{"name":"GF_PATHS_HOME","value":"/usr/share/grafana"},{"name":"GF_PATHS_LOGS","value":"/var/log/grafana"},{"name":"GF_PATHS_PLUGINS","value":"/var/lib/grafana/plugins"},{"name":"GF_PATHS_PROVISIONING","value":"/etc/grafana/provisioning"}],"image":"grafana/grafana-enterprise","name":"grafana","ports":[{"containerPort":3000}],"volumeMounts":[{"mountPath":"/var/lib/grafana","name":"grafana-data"}]}],"volumes":[{"name":"grafana-data","nfs":{"path":"/data/services/grafana","server":"10.60.1.15"}}]}}}}
+    creationTimestamp: "2025-02-21T20:34:35Z"
+    generation: 1
+    labels:
+      app: grafana
+      app.kubernetes.io/instance: grafana
+    name: grafana
+    namespace: grafana
+    resourceVersion: "12566455"
+    uid: 7735353c-0ce8-4b06-9de4-c634cb765994
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 1
+    selector:
+      matchLabels:
+        app: grafana
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: grafana
+      spec:
+        containers:
+        - command:
+          - /run.sh
+          env:
+          - name: GF_DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_PASSWORD
+                name: grafana-postgres-secret
+          - name: GF_DATABASE_SSL_MODE
+            value: disable
+          - name: GF_DATABASE_TYPE
+            value: postgres
+          - name: GF_DATABASE_HOST
+            value: postgres.grafana.svc.cluster.local:5432
+          - name: GF_DATABASE_NAME
+            value: grafana
+          - name: GF_DATABASE_USER
+            value: root
+          - name: GF_PATHS_CONFIG
+            value: /etc/grafana/grafana.ini
+          - name: GF_PATHS_DATA
+            value: /var/lib/grafana
+          - name: GF_PATHS_HOME
+            value: /usr/share/grafana
+          - name: GF_PATHS_LOGS
+            value: /var/log/grafana
+          - name: GF_PATHS_PLUGINS
+            value: /var/lib/grafana/plugins
+          - name: GF_PATHS_PROVISIONING
+            value: /etc/grafana/provisioning
+          image: grafana/grafana-enterprise
+          imagePullPolicy: Always
+          name: grafana
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: grafana-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: grafana-data
+          nfs:
+            path: /data/services/grafana
+            server: 10.60.1.15
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-02-21T20:34:35Z"
+      lastUpdateTime: "2025-02-21T20:35:54Z"
+      message: ReplicaSet "grafana-5997f59f95" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2025-11-01T20:15:58Z"
+      lastUpdateTime: "2025-11-01T20:15:58Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"loki","app.kubernetes.io/instance":"grafana"},"name":"loki","namespace":"grafana"},"spec":{"replicas":1,"revisionHistoryLimit":1,"selector":{"matchLabels":{"app":"loki"}},"template":{"metadata":{"labels":{"app":"loki"}},"spec":{"containers":[{"args":["--config.file=/mnt/config/loki-config.yaml"],"image":"grafana/loki:3.5.7","name":"loki","ports":[{"containerPort":3100}],"volumeMounts":[{"mountPath":"/mnt/config","name":"loki-config","readOnly":true}]}],"volumes":[{"name":"loki-config","nfs":{"path":"/data/services/loki/config","server":"10.60.1.15"}}]}}}}
+    creationTimestamp: "2025-11-04T00:37:09Z"
+    generation: 1
+    labels:
+      app: loki
+      app.kubernetes.io/instance: grafana
+    name: loki
+    namespace: grafana
+    resourceVersion: "12685429"
+    uid: e38c2ddb-9af5-4627-b624-966996dc83ee
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 1
+    selector:
+      matchLabels:
+        app: loki
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: loki
+      spec:
+        containers:
+        - args:
+          - --config.file=/mnt/config/loki-config.yaml
+          image: grafana/loki:3.5.7
+          imagePullPolicy: IfNotPresent
+          name: loki
+          ports:
+          - containerPort: 3100
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /mnt/config
+            name: loki-config
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: loki-config
+          nfs:
+            path: /data/services/loki/config
+            server: 10.60.1.15
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-11-04T00:37:14Z"
+      lastUpdateTime: "2025-11-04T00:37:14Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-11-04T00:37:09Z"
+      lastUpdateTime: "2025-11-04T00:37:14Z"
+      message: ReplicaSet "loki-679cd59d79" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"postgres","app.kubernetes.io/instance":"grafana"},"name":"postgres","namespace":"grafana"},"spec":{"replicas":1,"revisionHistoryLimit":1,"selector":{"matchLabels":{"app":"postgres"}},"template":{"metadata":{"labels":{"app":"postgres"}},"spec":{"containers":[{"args":["postgres"],"command":["docker-entrypoint.sh"],"env":[{"name":"POSTGRES_DB","value":"grafana"},{"name":"POSTGRES_USER","value":"root"},{"name":"POSTGRES_PASSWORD","valueFrom":{"secretKeyRef":{"key":"POSTGRES_PASSWORD","name":"grafana-postgres-secret"}}},{"name":"PGDATA","value":"/var/lib/postgresql/data"}],"image":"postgres:15","name":"postgres","ports":[{"containerPort":5432}],"volumeMounts":[{"mountPath":"/var/lib/postgresql/data","name":"postgres-data"}]}],"volumes":[{"name":"postgres-data","nfs":{"path":"/data/services/grafana-postgres","server":"10.60.1.15"}}]}}}}
+    creationTimestamp: "2025-02-21T20:34:35Z"
+    generation: 1
+    labels:
+      app: postgres
+      app.kubernetes.io/instance: grafana
+    name: postgres
+    namespace: grafana
+    resourceVersion: "12565641"
+    uid: c9fb1d10-7ff0-4efd-ad34-6280636e463a
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 1
+    selector:
+      matchLabels:
+        app: postgres
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: postgres
+      spec:
+        containers:
+        - args:
+          - postgres
+          command:
+          - docker-entrypoint.sh
+          env:
+          - name: POSTGRES_DB
+            value: grafana
+          - name: POSTGRES_USER
+            value: root
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_PASSWORD
+                name: grafana-postgres-secret
+          - name: PGDATA
+            value: /var/lib/postgresql/data
+          image: postgres:15
+          imagePullPolicy: IfNotPresent
+          name: postgres
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: postgres-data
+          nfs:
+            path: /data/services/grafana-postgres
+            server: 10.60.1.15
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-02-21T20:34:35Z"
+      lastUpdateTime: "2025-02-21T20:35:40Z"
+      message: ReplicaSet "postgres-5b6d78758" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2025-11-01T20:14:25Z"
+      lastUpdateTime: "2025-11-01T20:14:25Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2025-02-21T20:34:35Z"
+    generation: 1
+    labels:
+      app: grafana
+      pod-template-hash: 5997f59f95
+    name: grafana-5997f59f95
+    namespace: grafana
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: grafana
+      uid: 7735353c-0ce8-4b06-9de4-c634cb765994
+    resourceVersion: "12566454"
+    uid: 77ef59ab-1f20-4aa0-9dde-42caf6aae0e2
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: grafana
+        pod-template-hash: 5997f59f95
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: grafana
+          pod-template-hash: 5997f59f95
+      spec:
+        containers:
+        - command:
+          - /run.sh
+          env:
+          - name: GF_DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_PASSWORD
+                name: grafana-postgres-secret
+          - name: GF_DATABASE_SSL_MODE
+            value: disable
+          - name: GF_DATABASE_TYPE
+            value: postgres
+          - name: GF_DATABASE_HOST
+            value: postgres.grafana.svc.cluster.local:5432
+          - name: GF_DATABASE_NAME
+            value: grafana
+          - name: GF_DATABASE_USER
+            value: root
+          - name: GF_PATHS_CONFIG
+            value: /etc/grafana/grafana.ini
+          - name: GF_PATHS_DATA
+            value: /var/lib/grafana
+          - name: GF_PATHS_HOME
+            value: /usr/share/grafana
+          - name: GF_PATHS_LOGS
+            value: /var/log/grafana
+          - name: GF_PATHS_PLUGINS
+            value: /var/lib/grafana/plugins
+          - name: GF_PATHS_PROVISIONING
+            value: /etc/grafana/provisioning
+          image: grafana/grafana-enterprise
+          imagePullPolicy: Always
+          name: grafana
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: grafana-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: grafana-data
+          nfs:
+            path: /data/services/grafana
+            server: 10.60.1.15
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2025-11-04T00:37:09Z"
+    generation: 1
+    labels:
+      app: loki
+      pod-template-hash: 679cd59d79
+    name: loki-679cd59d79
+    namespace: grafana
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: loki
+      uid: e38c2ddb-9af5-4627-b624-966996dc83ee
+    resourceVersion: "12685428"
+    uid: aaee0969-7255-4abf-925e-efdf5091a5f9
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: loki
+        pod-template-hash: 679cd59d79
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: loki
+          pod-template-hash: 679cd59d79
+      spec:
+        containers:
+        - args:
+          - --config.file=/mnt/config/loki-config.yaml
+          image: grafana/loki:3.5.7
+          imagePullPolicy: IfNotPresent
+          name: loki
+          ports:
+          - containerPort: 3100
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /mnt/config
+            name: loki-config
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: loki-config
+          nfs:
+            path: /data/services/loki/config
+            server: 10.60.1.15
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2025-02-21T20:34:35Z"
+    generation: 1
+    labels:
+      app: postgres
+      pod-template-hash: 5b6d78758
+    name: postgres-5b6d78758
+    namespace: grafana
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: postgres
+      uid: c9fb1d10-7ff0-4efd-ad34-6280636e463a
+    resourceVersion: "12565638"
+    uid: 1f3e92cd-eca8-4bd0-831c-17bcace401ef
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: postgres
+        pod-template-hash: 5b6d78758
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: postgres
+          pod-template-hash: 5b6d78758
+      spec:
+        containers:
+        - args:
+          - postgres
+          command:
+          - docker-entrypoint.sh
+          env:
+          - name: POSTGRES_DB
+            value: grafana
+          - name: POSTGRES_USER
+            value: root
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_PASSWORD
+                name: grafana-postgres-secret
+          - name: PGDATA
+            value: /var/lib/postgresql/data
+          image: postgres:15
+          imagePullPolicy: IfNotPresent
+          name: postgres
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: postgres-data
+          nfs:
+            path: /data/services/grafana-postgres
+            server: 10.60.1.15
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
