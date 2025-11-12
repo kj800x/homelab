@@ -7,8 +7,6 @@ metadata:
     app: jellyfin
 spec:
   strategy:
-    # Required because VictoriaMetrics in single-instance mode uses a locking
-    # strategy to prevent multiple instances from writing to the same storage
     type: Recreate
   replicas: 1
   revisionHistoryLimit: 1
