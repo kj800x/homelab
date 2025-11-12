@@ -55,6 +55,7 @@ spec:
                 secretKeyRef:
                   name: wyze-creds
                   key: password
+            # Get these from https://developer-api-console.wyze.com/index.html
             - name: API_ID
               valueFrom:
                 secretKeyRef:
