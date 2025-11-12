@@ -1,0 +1,4 @@
+# Should we make a timelapse team?
+team: home-sensors
+kind: service
+namespace: home-sensors
