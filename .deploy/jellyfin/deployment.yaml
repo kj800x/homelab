@@ -59,3 +59,5 @@ spec:
           nfs:
             server: 10.60.1.15
             path: /data/mounts/tv
+      nodeSelector:
+        dedicated: nas
