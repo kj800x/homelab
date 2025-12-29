@@ -10,7 +10,7 @@ data:
   PAPERLESS_REDIS: "redis://broker:6379"
   PAPERLESS_DBENGINE: "postgresql"
   PAPERLESS_DBHOST: "db"
-  PAPERLESS_DBNAME": "paperless"
+  PAPERLESS_DBNAME: "paperless"
   PAPERLESS_DBUSER: "paperless"
 
   # See http://docs.paperless-ngx.com/configuration/ for all available options.
