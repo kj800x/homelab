@@ -14,8 +14,18 @@ entryPoints:
           to: websecure
           scheme: https
           permanent: true
+    transport:
+      respondingTimeouts:
+        readTimeout: 1h
+        idleTimeout: 1h
+        writeTimeout: 1h
   websecure:
     address: ":443"
+    transport:
+      respondingTimeouts:
+        readTimeout: 1h
+        idleTimeout: 1h
+        writeTimeout: 1h
 
 # Manage SSL Certificates
 
