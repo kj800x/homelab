@@ -4,31 +4,7 @@ providers:
       enabled: true
       pathOverride: "traefik/traefik"
 
-# Entry points configuration
-entryPoints:
-  web:
-    address: ":80"
-    http:
-      redirections:
-        entryPoint:
-          to: websecure
-          scheme: https
-          permanent: true
-    transport:
-      respondingTimeouts:
-        readTimeout: 1h
-        idleTimeout: 1h
-        writeTimeout: 1h
-  websecure:
-    address: ":443"
-    transport:
-      respondingTimeouts:
-        readTimeout: 1h
-        idleTimeout: 1h
-        writeTimeout: 1h
-
 # Manage SSL Certificates
-
 certificatesResolvers:
   letsencrypt:
     acme:
@@ -82,12 +58,22 @@ ports:
       default: true
     exposedPort: 80
     protocol: TCP
+    transport:
+      respondingTimeouts:
+        readTimeout: 1h
+        idleTimeout: 1h
+        writeTimeout: 1h
   websecure:
     port: 443
     expose:
       default: true
     exposedPort: 443
     protocol: TCP
+    transport:
+      respondingTimeouts:
+        readTimeout: 1h
+        idleTimeout: 1h
+        writeTimeout: 1h
   traefik:
     port: 9000
     expose:
