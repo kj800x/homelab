@@ -1,0 +1,77 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver
+  namespace: paperless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless-web
+  template:
+    metadata:
+      labels:
+        app: paperless-web
+    spec:
+      containers:
+        - name: paperless
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.3
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: paperless-env
+          # Put most of the config in paperless-env, just use env: for any secrets
+          env:
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets
+                  key: POSTGRES_PASSWORD
+            # Adjust this key if you plan to make paperless available publicly. It should
+            # be a very long sequence of random characters. You don't need to remember it.
+            - name: PAPERLESS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets
+                  key: PAPERLESS_SECRET_KEY
+          volumeMounts:
+            - name: data
+              mountPath: /usr/src/paperless/data
+            - name: media
+              mountPath: /usr/src/paperless/media
+            - name: export
+              mountPath: /usr/src/paperless/export
+            - name: consume
+              mountPath: /usr/src/paperless/consume
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      volumes:
+        - name: data
+          nfs:
+            server: 10.60.1.15
+            path: /data/services/paperless/data
+        - name: media
+          nfs:
+            server: 10.60.1.15
+            path: /data/services/paperless/media
+        - name: export
+          nfs:
+            server: 10.60.1.15
+            path: /data/services/paperless/export
+        - name: consume
+          nfs:
+            server: 10.60.1.15
+            path: /data/services/paperless/consume
