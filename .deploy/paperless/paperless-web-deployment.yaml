@@ -37,6 +37,11 @@ spec:
                 secretKeyRef:
                   name: paperless-secrets
                   key: PAPERLESS_SECRET_KEY
+            - name: PAPERLESS_IGNORE_DATES
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets
+                  key: PAPERLESS_IGNORE_DATES
           volumeMounts:
             - name: data
               mountPath: /usr/src/paperless/data

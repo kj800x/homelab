@@ -13,6 +13,8 @@ data:
   PAPERLESS_DBNAME: "paperless"
   PAPERLESS_DBUSER: "paperless"
 
+  PAPERLESS_DATE_ORDER: "MDY"
+
   # See http://docs.paperless-ngx.com/configuration/ for all available options.
 
   # The UID and GID of the user used to run paperless in the container. Set this
