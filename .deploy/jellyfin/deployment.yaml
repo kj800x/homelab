@@ -46,6 +46,26 @@ spec:
               mountPath: /data/movies
             - name: tv
               mountPath: /data/tvshows
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            periodSeconds: 5
+            failureThreshold: 60  # 5 minutes worst-case startup
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
       volumes:
         - name: config
           nfs:
