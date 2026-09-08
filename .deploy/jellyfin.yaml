@@ -1,3 +1,13 @@
+# JELLYFIN follows the newest 10.11.x tag of the linuxserver image as
+# watchtower sees it. Jellyfin releases outside that range (12.x today)
+# are never picked up on their own: bump the pattern here deliberately,
+# or pin an exact tag from the deploy page, to move.
+parameters:
+  JELLYFIN:
+    type: tag
+    image: lscr.io/linuxserver/jellyfin
+    pattern: "10.11.*"
+
 team: kj800x
 kind: service
 namespace: jellyfin
