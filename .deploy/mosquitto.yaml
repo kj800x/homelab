@@ -5,7 +5,8 @@ parameters:
   MOSQUITTO:
     type: tag
     image: docker.io/library/eclipse-mosquitto
-    pattern: "=2.1.2-alpine"
+    pattern: "^2.1.2"
+    variant: alpine
 
 team: cluster-infra
 kind: service
