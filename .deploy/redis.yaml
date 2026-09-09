@@ -1,3 +1,12 @@
+# Third-party images resolve through tag parameters (see
+# https://github.com/kj800x/homelab/issues/7). The pattern is a semver
+# range over the image's tags as watchtower sees them.
+parameters:
+  REDIS:
+    type: tag
+    image: docker.io/library/redis
+    pattern: "=8.10.1"
+
 team: cluster-infra
 kind: service
 namespace: redis
