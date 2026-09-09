@@ -5,7 +5,7 @@ parameters:
   NODE_EXPORTER:
     type: tag
     image: quay.io/prometheus/node-exporter
-    pattern: "=1.12.1"
+    pattern: "^1.12.1"
 
 team: cluster-infra
 kind: worker

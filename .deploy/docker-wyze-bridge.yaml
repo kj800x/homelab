@@ -5,7 +5,7 @@ parameters:
   WYZE_BRIDGE:
     type: tag
     image: docker.io/mrlt8/wyze-bridge
-    pattern: "=2.10.3"
+    pattern: "^2.10.3"
 
 # Should we make a timelapse team?
 team: home-sensors

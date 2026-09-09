@@ -5,11 +5,11 @@ parameters:
   PAPERLESS:
     type: tag
     image: ghcr.io/paperless-ngx/paperless-ngx
-    pattern: "=2.20.3"
+    pattern: "^2.20.3"
   REDIS:
     type: tag
     image: docker.io/library/redis
-    pattern: "=8.10.1"
+    pattern: "^8.10.1"
 
 team: kj800x
 kind: service
