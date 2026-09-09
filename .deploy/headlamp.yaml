@@ -5,7 +5,7 @@ parameters:
   HEADLAMP:
     type: tag
     image: ghcr.io/headlamp-k8s/headlamp
-    pattern: "=0.40.1"
+    pattern: ">=0.40.1, <1.0.0"
 
 team: cluster-infra
 kind: service
