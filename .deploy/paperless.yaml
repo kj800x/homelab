@@ -13,7 +13,7 @@ parameters:
   POSTGRES:
     type: tag
     image: docker.io/library/postgres
-    pattern: "=18.1.0"
+    pattern: "^18.1.0"
 
 team: kj800x
 kind: service
