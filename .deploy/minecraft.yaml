@@ -1,3 +1,12 @@
+# Third-party images resolve through tag parameters (see
+# https://github.com/kj800x/homelab/issues/7). The pattern is a semver
+# range over the image's tags as watchtower sees them.
+parameters:
+  MINECRAFT_SERVER:
+    type: tag
+    image: docker.io/itzg/minecraft-server
+    pattern: "=2026.9.0"
+
 team: kj800x
 kind: service
 namespace: minecraft

@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: minecraft
-          image: itzg/minecraft-server
+          image: itzg/minecraft-server:$MINECRAFT_SERVER
           env:
             - name: MEMORY
               value: "4G"
