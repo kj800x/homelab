@@ -19,7 +19,7 @@ spec:
       hostNetwork: true
       containers:
         - name: docker-wyze-bridge
-          image: mrlt8/wyze-bridge:latest
+          image: mrlt8/wyze-bridge:$WYZE_BRIDGE
           imagePullPolicy: Always
           # ports:
           #   - containerPort: 1935
