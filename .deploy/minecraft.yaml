@@ -5,7 +5,7 @@ parameters:
   MINECRAFT_SERVER:
     type: tag
     image: docker.io/itzg/minecraft-server
-    pattern: "=2026.9.0"
+    pattern: "^2026.9.0"
 
 team: kj800x
 kind: service
