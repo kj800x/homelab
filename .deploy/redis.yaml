@@ -5,7 +5,7 @@ parameters:
   REDIS:
     type: tag
     image: docker.io/library/redis
-    pattern: "=8.10.1"
+    pattern: "^8.10.1"
 
 team: cluster-infra
 kind: service
