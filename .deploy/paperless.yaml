@@ -1,3 +1,16 @@
+# Third-party images resolve through tag parameters (see
+# https://github.com/kj800x/homelab/issues/7). The pattern is a semver
+# range over the image's tags as watchtower sees them.
+parameters:
+  PAPERLESS:
+    type: tag
+    image: ghcr.io/paperless-ngx/paperless-ngx
+    pattern: "=2.20.3"
+  REDIS:
+    type: tag
+    image: docker.io/library/redis
+    pattern: "=8.10.1"
+
 team: kj800x
 kind: service
 namespace: paperless
