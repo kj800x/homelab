@@ -6,6 +6,10 @@ parameters:
     type: tag
     image: docker.io/grafana/grafana-enterprise
     pattern: "^12.4.10"
+  POSTGRES:
+    type: tag
+    image: docker.io/library/postgres
+    pattern: "=15.11.0"
 
 team: cluster-infra
 kind: service
