@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: mosquitto
-          image: eclipse-mosquitto:latest
+          image: eclipse-mosquitto:$MOSQUITTO
           command: ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
           volumeMounts:
             - name: mosquitto-storage
