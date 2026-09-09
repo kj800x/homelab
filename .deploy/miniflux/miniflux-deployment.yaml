@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: miniflux
-        image: miniflux/miniflux:latest
+        image: miniflux/miniflux:$MINIFLUX
         command: ["/usr/bin/miniflux"]
         env:
         - name: CREATE_ADMIN
