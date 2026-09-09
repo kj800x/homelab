@@ -5,7 +5,7 @@ parameters:
   VICTORIA_METRICS:
     type: tag
     image: docker.io/victoriametrics/victoria-metrics
-    pattern: "=1.117.1"
+    pattern: "^1.117.1"
 
 team: cluster-infra
 kind: service
