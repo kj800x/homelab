@@ -5,7 +5,7 @@ parameters:
   LOKI:
     type: tag
     image: docker.io/grafana/loki
-    pattern: "=3.5.7"
+    pattern: "^3.5.7"
 
 team: cluster-infra
 kind: service
