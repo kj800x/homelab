@@ -5,7 +5,7 @@ parameters:
   MINIFLUX:
     type: tag
     image: docker.io/miniflux/miniflux
-    pattern: "=2.3.3"
+    pattern: "^2.3.3"
 
 team: kj800x
 kind: service
