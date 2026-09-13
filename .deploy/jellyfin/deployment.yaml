@@ -46,6 +46,10 @@ spec:
               mountPath: /data/movies
             - name: tv
               mountPath: /data/tvshows
+            - name: books
+              mountPath: /data/books
+            - name: family-media
+              mountPath: /data/family-media
           startupProbe:
             httpGet:
               path: /health
@@ -79,5 +83,13 @@ spec:
           nfs:
             server: 10.60.1.15
             path: /data/mounts/tv
+        - name: books
+          nfs:
+            server: 10.60.1.15
+            path: /data/mounts/books
+        - name: family-media
+          nfs:
+            server: 10.60.1.15
+            path: /data/mounts/family-media
       nodeSelector:
         dedicated: nas
