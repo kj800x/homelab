@@ -6,7 +6,7 @@ parameters:
   JELLYFIN:
     type: tag
     image: lscr.io/linuxserver/jellyfin
-    pattern: "10.11.*"
+    pattern: "12.*"
 
 team: kj800x
 kind: service
