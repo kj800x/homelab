@@ -48,6 +48,8 @@ spec:
               mountPath: /data/tvshows
             - name: books
               mountPath: /data/books
+            - name: comics
+              mountPath: /data/comics
             - name: family-media
               mountPath: /data/family-media
           startupProbe:
@@ -87,6 +89,10 @@ spec:
           nfs:
             server: 10.60.1.15
             path: /data/mounts/books
+        - name: comics
+          nfs:
+            server: 10.60.1.15
+            path: /data/mounts/comics
         - name: family-media
           nfs:
             server: 10.60.1.15
