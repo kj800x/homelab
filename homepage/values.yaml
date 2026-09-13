@@ -8,7 +8,7 @@ config:
     - Media:
         - Jellyfin:
             icon: jellyfin.png
-            href: http://jellyfin.home.coolkev.com/web/index.html
+            href: https://jellyfin.home.coolkev.com/web/index.html
             description: Media server
         #    server: local
         #    container: jellyfin

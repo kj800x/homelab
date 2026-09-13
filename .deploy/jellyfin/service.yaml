@@ -3,30 +3,12 @@ kind: Service
 metadata:
   name: jellyfin
   namespace: jellyfin
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: jellyfin.home.coolkev.com
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: jellyfin
   ports:
-    - name: http-default
-      protocol: TCP
-      port: 80
-      targetPort: 8096
     - name: http
       protocol: TCP
       port: 8096
       targetPort: 8096
-    - name: https
-      protocol: TCP
-      port: 8920
-      targetPort: 8920
-    - name: dlna
-      protocol: UDP
-      port: 1900
-      targetPort: 1900
-    - name: discovery
-      protocol: UDP
-      port: 7359
-      targetPort: 7359
