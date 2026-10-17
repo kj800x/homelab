@@ -11,3 +11,11 @@ parameters:
 team: kj800x
 kind: service
 namespace: jellyfin
+
+# A deploy restarts Jellyfin, so autodeploy waits while anyone is
+# watching (re-asked every 5 minutes); a person deploying from the deploy
+# page sees who is watching and can tick "Deploy anyway".
+checks:
+  pre:
+    - name: jellyfin-streams
+      http: http://deploy-checks.cicd.svc/jellyfin/active-streams
