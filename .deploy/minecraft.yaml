@@ -10,3 +10,10 @@ parameters:
 team: kj800x
 kind: service
 namespace: minecraft
+
+# A deploy restarts the server and drops everyone on it, so hold while
+# anyone is connected (acknowledge the soft block to go anyway).
+checks:
+  pre:
+    - name: minecraft-players
+      http: http://deploy-checks.cicd.svc/minecraft/players
