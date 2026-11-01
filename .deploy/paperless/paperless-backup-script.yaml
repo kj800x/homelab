@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paperless-backup-script
+  namespace: paperless
+data:
+  backup.sh: |
+    #!/bin/sh
+    # Push the document_exporter output in /export to restic, then report
+    # chips/metrics/report to Jobfather via /job-output.
+    set -eu
+
+    OUT=/job-output
+    mkdir -p "$OUT"
+
+    fail() {
+      printf '[{"name":"status","value":"%s","color":"danger"}]\n' "$1" > "$OUT/chips.json"
+      echo "ERROR: $1" >&2
+      exit 1
+    }
+
+    human() {
+      awk -v b="$1" 'BEGIN { split("B KiB MiB GiB TiB", u, " "); i = 1
+        while (b >= 1024 && i < 5) { b /= 1024; i++ }
+        printf "%.1f %s", b, u[i] }'
+    }
+
+    for v in RESTIC_REPOSITORY RESTIC_PASSWORD AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY; do
+      eval "val=\${$v:-}"
+      [ -n "$val" ] || fail "missing $v (check the paperless-backup 1Password item)"
+    done
+
+    [ -f /export/manifest.json ] || fail "no manifest.json in export; did document_exporter run?"
+
+    # Exit code 10 = repository does not exist (restic >= 0.17). Only init in
+    # that case, never on auth/network errors.
+    rc=0
+    restic cat config > /dev/null || rc=$?
+    if [ "$rc" -eq 10 ]; then
+      echo "Repository not found, initializing"
+      restic init
+    elif [ "$rc" -ne 0 ]; then
+      fail "cannot open restic repository (exit $rc)"
+    fi
+
+    echo "== backup"
+    restic backup --json --host paperless --tag nightly /export > /tmp/backup.json \
+      || fail "restic backup failed"
+    summary=$(grep '"message_type":"summary"' /tmp/backup.json || true)
+    [ -n "$summary" ] || fail "restic backup produced no summary"
+    echo "$summary"
+
+    field() {
+      printf '%s' "$summary" | sed -n "s/.*\"$1\":\"\{0,1\}\([^,\"}]*\).*/\1/p"
+    }
+    snapshot=$(field snapshot_id | cut -c1-8)
+    files_new=$(field files_new)
+    files_changed=$(field files_changed)
+    data_added=$(field data_added)
+    source_bytes=$(field total_bytes_processed)
+
+    echo "== forget/prune"
+    restic forget --host paperless --keep-daily 7 --keep-weekly 4 --keep-monthly 12 --prune \
+      || fail "restic forget/prune failed"
+
+    echo "== check"
+    restic check || fail "restic check failed"
+
+    repo_bytes=$(restic stats --mode raw-data --json | sed -n 's/.*"total_size":\([0-9]*\).*/\1/p')
+    snapshot_count=$(restic snapshots --host paperless --json | grep -o '"short_id"' | wc -l)
+
+    cat > "$OUT/chips.json" <<EOF
+    [
+      {"name": "snapshot", "value": "$snapshot", "color": "success"},
+      {"name": "added", "value": "$(human "$data_added")"},
+      {"name": "new files", "value": $files_new},
+      {"name": "changed files", "value": $files_changed},
+      {"name": "export size", "value": "$(human "$source_bytes")"},
+      {"name": "repo size", "value": "$(human "$repo_bytes")"},
+      {"name": "snapshots", "value": $snapshot_count}
+    ]
+    EOF
+
+    cat > "$OUT/metrics.json" <<EOF
+    [
+      {"name": "paperless_backup_data_added_bytes", "value": $data_added},
+      {"name": "paperless_backup_files_new", "value": $files_new},
+      {"name": "paperless_backup_files_changed", "value": $files_changed},
+      {"name": "paperless_backup_export_bytes", "value": $source_bytes},
+      {"name": "paperless_backup_repo_bytes", "value": $repo_bytes},
+      {"name": "paperless_backup_snapshots", "value": $snapshot_count}
+    ]
+    EOF
+
+    {
+      echo "# Paperless backup"
+      echo
+      echo "Snapshot \`$snapshot\`: $files_new new, $files_changed changed files, $(human "$data_added") added."
+      echo
+      echo '```'
+      restic snapshots --host paperless --compact
+      echo '```'
+    } > "$OUT/report.md"
+
+    echo "done"

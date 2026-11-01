@@ -1,0 +1,109 @@
+# Nightly Paperless backup.
+#
+# 1. `exporter` (init container) runs document_exporter into the export
+#    volume. It uses the same $PAPERLESS tag as the webserver, so the exporter
+#    always matches the live schema. It deliberately bypasses the image's
+#    /init entrypoint: that would run migrations and start a second
+#    webserver/consumer/scheduler. Instead it runs manage.py directly as the
+#    paperless user (uid 1000).
+# 2. `restic` pushes the export to Backblaze B2 (S3 API) as an encrypted,
+#    deduplicated snapshot, applies retention, checks the repo, and reports
+#    chips/metrics to Jobfather.
+#
+# Credentials come from the 1Password item vaults/kube/items/paperless-backup
+# (see paperless-backup-secret.yaml).
+#
+# Restore: `restic restore latest --target /some/dir` then, on a fresh
+# instance of the same Paperless version,
+# `document_importer /some/dir/export`.
+apiVersion: jobfather.coolkev.com/v1
+kind: JobTemplate
+metadata:
+  name: paperless-backup
+  namespace: paperless
+spec:
+  schedule: "0 7 * * *"
+  cleanupAfter: 1h
+  acceptanceTest: false
+  spec:
+    restartPolicy: Never
+    activeDeadlineSeconds: 7200
+    initContainers:
+      - name: exporter
+        image: ghcr.io/paperless-ngx/paperless-ngx:$PAPERLESS
+        workingDir: /usr/src/paperless/src
+        command:
+          - python3
+          - manage.py
+          - document_exporter
+          - /usr/src/paperless/export
+          - --compare-checksums
+          - --delete
+          - --split-manifest
+          - --no-thumbnail
+          - --no-progress-bar
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+        envFrom:
+          - configMapRef:
+              name: paperless-env
+        env:
+          - name: HOME
+            value: /tmp
+          - name: PAPERLESS_DBPASS
+            valueFrom:
+              secretKeyRef:
+                name: paperless-secrets
+                key: POSTGRES_PASSWORD
+          - name: PAPERLESS_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: paperless-secrets
+                key: PAPERLESS_SECRET_KEY
+          - name: PAPERLESS_IGNORE_DATES
+            valueFrom:
+              secretKeyRef:
+                name: paperless-secrets
+                key: PAPERLESS_IGNORE_DATES
+        volumeMounts:
+          - name: data
+            mountPath: /usr/src/paperless/data
+          - name: media
+            mountPath: /usr/src/paperless/media
+            readOnly: true
+          - name: export
+            mountPath: /usr/src/paperless/export
+    containers:
+      - name: restic
+        image: docker.io/restic/restic:0.19.1
+        command: ["/bin/sh", "/scripts/backup.sh"]
+        envFrom:
+          # optional so a missing secret fails the run with a clear message
+          # instead of leaving the pod stuck in CreateContainerConfigError
+          - secretRef:
+              name: paperless-backup
+              optional: true
+        volumeMounts:
+          - name: export
+            mountPath: /export
+            readOnly: true
+          - name: scripts
+            mountPath: /scripts
+            readOnly: true
+    volumes:
+      - name: data
+        nfs:
+          server: 10.60.1.15
+          path: /data/services/paperless/data
+      - name: media
+        nfs:
+          server: 10.60.1.15
+          path: /data/services/paperless/media
+      - name: export
+        nfs:
+          server: 10.60.1.15
+          path: /data/services/paperless/export
+      - name: scripts
+        configMap:
+          name: paperless-backup-script
