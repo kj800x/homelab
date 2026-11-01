@@ -5,6 +5,9 @@ metadata:
   namespace: paperless
 spec:
   replicas: 1
+  # Never run two postgres instances against the same NFS data dir.
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: paperless-postgres
