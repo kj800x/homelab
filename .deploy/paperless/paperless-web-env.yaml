@@ -15,6 +15,9 @@ data:
 
   PAPERLESS_DATE_ORDER: "MDY"
 
+  # v3 accepts duplicate uploads by default; keep v2's behavior of rejecting them.
+  PAPERLESS_CONSUMER_DELETE_DUPLICATES: "true"
+
   # See http://docs.paperless-ngx.com/configuration/ for all available options.
 
   # The UID and GID of the user used to run paperless in the container. Set this
