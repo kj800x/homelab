@@ -69,9 +69,9 @@ spec:
         volumeMounts:
           - name: data
             mountPath: /usr/src/paperless/data
+          # writable: paperless' startup checks write-test MEDIA_ROOT
           - name: media
             mountPath: /usr/src/paperless/media
-            readOnly: true
           - name: export
             mountPath: /usr/src/paperless/export
     containers:
