@@ -12,7 +12,7 @@ metadata:
 spec:
   serviceName: postgres
   revisionHistoryLimit: 1
-  replicas: 0  # TEMP: step 1 of Deployment -> StatefulSet swap
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
