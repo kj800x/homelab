@@ -50,7 +50,30 @@ spec:
             - name: GF_PATHS_PROVISIONING
               value: "/etc/grafana/provisioning"
           ports:
-            - containerPort: 3000
+            - name: http
+              containerPort: 3000
+          # /api/health includes a DB check, so it gates startup/readiness.
+          # /healthz is process-only, so a Postgres blip won't restart Grafana.
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 5
+            failureThreshold: 60  # 5 minutes worst-case (DB migrations on upgrade)
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
           volumeMounts:
             - name: grafana-data
               mountPath: /var/lib/grafana
