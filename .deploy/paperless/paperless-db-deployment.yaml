@@ -35,16 +35,24 @@ spec:
           volumeMounts:
             - name: pgdata
               mountPath: /var/lib/postgresql
-          readinessProbe:
-            tcpSocket:
-              port: 5432
-            initialDelaySeconds: 5
+          # pg_isready = actually accepting connections, not just port open.
+          startupProbe:
+            exec:
+              command: ["pg_isready", "-U", "paperless", "-d", "paperless", "-h", "127.0.0.1"]
             periodSeconds: 5
-          livenessProbe:
-            tcpSocket:
-              port: 5432
-            initialDelaySeconds: 15
+            failureThreshold: 120  # 10 min for crash recovery on NFS
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "paperless", "-d", "paperless", "-h", "127.0.0.1"]
             periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "paperless", "-d", "paperless", "-h", "127.0.0.1"]
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 6
       volumes:
         - name: pgdata
           nfs:

@@ -31,6 +31,22 @@ spec:
               protocol: TCP
             - containerPort: 9001
               protocol: TCP
+          # MQTT listener. (9001/websockets isn't enabled in mosquitto.conf.)
+          startupProbe:
+            tcpSocket:
+              port: 1883
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            tcpSocket:
+              port: 1883
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: 1883
+            periodSeconds: 20
+            failureThreshold: 3
       volumes:
         - name: mosquitto-storage
           nfs:
