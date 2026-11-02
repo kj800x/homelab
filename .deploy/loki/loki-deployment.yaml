@@ -8,6 +8,9 @@ metadata:
 spec:
   revisionHistoryLimit: 1
   replicas: 1
+  # Single-replica app with state on NFS: never run two copies at once.
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: loki
