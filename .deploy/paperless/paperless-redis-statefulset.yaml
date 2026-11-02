@@ -1,14 +1,17 @@
+# StatefulSet rather than Deployment: at most one broker-0 exists at a
+# time, including when a node drops off (a Deployment would start a
+# replacement while the old pod might still be writing to the NFS dir).
+# Updates delete broker-0 before creating the new one.
 
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: broker
   namespace: paperless
 spec:
-  replicas: 1
-  # Single-replica app with state on NFS: never run two copies at once.
-  strategy:
-    type: Recreate
+  serviceName: broker
+  revisionHistoryLimit: 1
+  replicas: 0  # TEMP: step 1 of Deployment -> StatefulSet swap
   selector:
     matchLabels:
       app: paperless-redis
