@@ -8,6 +8,11 @@ metadata:
 spec:
   revisionHistoryLimit: 1
   replicas: 1
+  # Never run two Grafanas against the same NFS data dir: the unified-search
+  # bleve index under /var/lib/grafana is file-locked, and the new pod
+  # crash-loops on "index is locked by another process" during a rollout.
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: grafana
