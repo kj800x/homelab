@@ -6,6 +6,9 @@ metadata:
   namespace: paperless
 spec:
   replicas: 1
+  # Single-replica app with state on NFS: never run two copies at once.
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: paperless-redis
