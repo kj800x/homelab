@@ -40,6 +40,24 @@ spec:
                   key: POSTGRES_PASSWORD
           ports:
             - containerPort: 5432
+          # pg_isready = actually accepting connections, not just port open.
+          startupProbe:
+            exec:
+              command: ["pg_isready", "-U", "root", "-d", "grafana", "-h", "127.0.0.1"]
+            periodSeconds: 5
+            failureThreshold: 120  # 10 min for crash recovery on NFS
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "root", "-d", "grafana", "-h", "127.0.0.1"]
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "root", "-d", "grafana", "-h", "127.0.0.1"]
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 6
           volumeMounts:
             # Postgres 18 image layout: data lands in 18/docker under here.
             - name: postgres-data

@@ -26,6 +26,28 @@ spec:
             - "--config.file=/mnt/config/loki-config.yaml"
           ports:
             - containerPort: 3100
+          # Not /ready: it's stuck at 503 on the pattern ingester ring, which would pull Loki out of its Service.
+
+          startupProbe:
+            httpGet:
+              path: /loki/api/v1/status/buildinfo
+              port: 3100
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /loki/api/v1/status/buildinfo
+              port: 3100
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /loki/api/v1/status/buildinfo
+              port: 3100
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
           volumeMounts:
             - name: loki-config
               mountPath: /mnt/config

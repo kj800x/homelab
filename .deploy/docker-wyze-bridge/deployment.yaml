@@ -36,6 +36,22 @@ spec:
           #     protocol: TCP
           #   - containerPort: 5000
           #     protocol: TCP
+          # RTSP server (hostNetwork). Only proves the bridge is up, not that cameras stream.
+          startupProbe:
+            tcpSocket:
+              port: 8554
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            tcpSocket:
+              port: 8554
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: 8554
+            periodSeconds: 20
+            failureThreshold: 3
           env:
             - name: WB_AUTH
               value: "false"
