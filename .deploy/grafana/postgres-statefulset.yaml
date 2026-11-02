@@ -1,16 +1,18 @@
+# StatefulSet rather than Deployment: at most one postgres-0 exists at a
+# time, including when a node drops off (a Deployment would start a
+# replacement while the old pod might still be writing to the NFS dir).
+# Updates delete postgres-0 before creating the new one.
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: postgres
   namespace: grafana
   labels:
     app: postgres
 spec:
-  revisionHistoryLimit: 1
+  serviceName: postgres
   replicas: 1
-  # Never run two postgres instances against the same NFS data dir.
-  strategy:
-    type: Recreate
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: postgres
@@ -36,15 +38,14 @@ spec:
                 secretKeyRef:
                   name: grafana-postgres-secret
                   key: POSTGRES_PASSWORD
-            - name: PGDATA
-              value: "/var/lib/postgresql/data"
           ports:
             - containerPort: 5432
           volumeMounts:
+            # Postgres 18 image layout: data lands in 18/docker under here.
             - name: postgres-data
-              mountPath: /var/lib/postgresql/data
+              mountPath: /var/lib/postgresql
       volumes:
         - name: postgres-data
           nfs:
             server: 10.60.1.15
-            path: /data/services/grafana-postgres
+            path: /data/services/grafana-postgres18
