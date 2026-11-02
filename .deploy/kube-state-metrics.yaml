@@ -1,0 +1,12 @@
+# Third-party images resolve through tag parameters (see
+# https://github.com/kj800x/homelab/issues/7). The pattern is a semver
+# range over the image's tags as watchtower sees them.
+parameters:
+  KUBE_STATE_METRICS:
+    type: tag
+    image: registry.k8s.io/kube-state-metrics/kube-state-metrics
+    pattern: "^2.20.0"
+
+team: cluster-infra
+kind: service
+namespace: kube-state-metrics

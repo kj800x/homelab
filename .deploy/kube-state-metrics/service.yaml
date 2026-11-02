@@ -1,0 +1,15 @@
+# Scraped by VictoriaMetrics (job kube-state-metrics in the NFS promscrape
+# config) at kube-state-metrics.kube-state-metrics.svc.cluster.local:8080.
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-state-metrics
+  namespace: kube-state-metrics
+spec:
+  type: ClusterIP
+  selector:
+    app: kube-state-metrics
+  ports:
+    - name: http-metrics
+      port: 8080
+      targetPort: http-metrics
