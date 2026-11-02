@@ -26,7 +26,7 @@ spec:
         - name: kube-state-metrics
           image: registry.k8s.io/kube-state-metrics/kube-state-metrics:$KUBE_STATE_METRICS
           args:
-            # Keep in sync with the ClusterRole in rbac.yaml.
+            # Keep in sync with clusterrole.yaml.
             - --resources=pods,nodes,namespaces,deployments,statefulsets,daemonsets,replicasets,jobs,cronjobs
           ports:
             - name: http-metrics
