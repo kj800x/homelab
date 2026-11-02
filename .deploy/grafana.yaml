@@ -5,7 +5,7 @@ parameters:
   GRAFANA:
     type: tag
     image: docker.io/grafana/grafana-enterprise
-    pattern: "^12.4.10"
+    pattern: "^13.3.0"
   POSTGRES:
     type: tag
     image: docker.io/library/postgres
