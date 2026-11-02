@@ -81,11 +81,13 @@ data:
     ]
     EOF
 
+    # Per-run deltas are counters (use increase()/rate()); sizes and the
+    # snapshot count are point-in-time state, so they stay gauges.
     cat > "$OUT/metrics.json" <<EOF
     [
-      {"name": "paperless_backup_data_added_bytes", "value": $data_added},
-      {"name": "paperless_backup_files_new", "value": $files_new},
-      {"name": "paperless_backup_files_changed", "value": $files_changed},
+      {"name": "paperless_backup_data_added_bytes", "value": $data_added, "type": "counter"},
+      {"name": "paperless_backup_files_new", "value": $files_new, "type": "counter"},
+      {"name": "paperless_backup_files_changed", "value": $files_changed, "type": "counter"},
       {"name": "paperless_backup_export_bytes", "value": $source_bytes},
       {"name": "paperless_backup_repo_bytes", "value": $repo_bytes},
       {"name": "paperless_backup_snapshots", "value": $snapshot_count}
