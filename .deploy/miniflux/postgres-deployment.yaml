@@ -34,15 +34,13 @@ spec:
                 secretKeyRef:
                   name: miniflux-admin-secret
                   key: ADMIN_PASSWORD
-            - name: PGDATA
-              value: /var/lib/postgresql/data
           ports:
             - containerPort: 5432
           volumeMounts:
             - name: postgres-data
-              mountPath: /var/lib/postgresql/data
+              mountPath: /var/lib/postgresql
       volumes:
         - name: postgres-data
           nfs:
             server: 10.60.1.15
-            path: /data/services/miniflux-postgres
+            path: /data/services/miniflux-postgres18
