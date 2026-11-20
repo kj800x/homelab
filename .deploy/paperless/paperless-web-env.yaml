@@ -33,6 +33,12 @@ data:
   # (if doing so please consider security measures such as reverse proxy)
   PAPERLESS_URL: "https://paperless.home.coolkev.com"
 
+  # 3.5.0 stopped defaulting ALLOWED_HOSTS to "*" once PAPERLESS_URL is set,
+  # which would reject kubelet probes (Host: pod IP) and paperless-mcp
+  # (Host: webserver.paperless.svc.cluster.local). Keep accepting any host;
+  # Traefik is the only way in from outside the cluster.
+  PAPERLESS_ALLOWED_HOSTS: "*"
+
   # Use this variable to set a timezone for the Paperless Docker containers. Defaults to UTC.
   PAPERLESS_TIME_ZONE: "America/New_York"
 
