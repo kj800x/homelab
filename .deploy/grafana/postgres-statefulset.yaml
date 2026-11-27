@@ -59,11 +59,12 @@ spec:
             timeoutSeconds: 5
             failureThreshold: 6
           volumeMounts:
-            # Postgres 18 image layout: data lands in 18/docker under here.
+            # Postgres 18+ image layout: data lands in <major>/docker under here.
+            # Each major gets a fresh NFS dir; data moves via pg_dumpall/psql.
             - name: postgres-data
               mountPath: /var/lib/postgresql
       volumes:
         - name: postgres-data
           nfs:
             server: 10.60.1.15
-            path: /data/services/grafana-postgres18
+            path: /data/services/grafana-postgres19

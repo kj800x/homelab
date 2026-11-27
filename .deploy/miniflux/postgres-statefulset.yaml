@@ -63,4 +63,4 @@ spec:
         - name: postgres-data
           nfs:
             server: 10.60.1.15
-            path: /data/services/miniflux-postgres18
+            path: /data/services/miniflux-postgres19

@@ -60,4 +60,4 @@ spec:
         - name: pgdata
           nfs:
             server: 10.60.1.15
-            path: /data/services/paperless/postgres
+            path: /data/services/paperless/postgres19
